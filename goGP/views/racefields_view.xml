@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+
+    <record id="view_racefields_tree" model="ir.ui.view">
+        <field name="name">vehicles.brands.tree</field>
+        <field name="model">racefields</field>
+        <field name="arch" type="xml">
+            <tree string="goGP racefields" multi_edit="1" sample="1">
+                <field name="name"/>
+                <field name="event_id"/>
+                <field name="description"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_racefields_filter" model="ir.ui.view">
+        <field name="name">racefields.filter</field>
+        <field name="model">racefields</field>
+        <field name="arch" type="xml">
+            <search string="goGP racefields">
+                <field name="name"/>
+                <field name="event_id"/>
+                <field name="description"/>
+            </search>
+        </field>
+    </record>
+    <record id="view_racefields_form" model="ir.ui.view">
+        <field name="name">racefields.form</field>
+        <field name="model">racefields</field>
+        <field name="arch" type="xml">
+            <form string="goGP racefields">
+                <sheet>
+                    <div>
+                        <label for="name" class="oe_edit_only"/>
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <field name="event_id"/>
+                        <field name="sort_order"/>
+                    </group>
+                    <group>
+                        <field name="description" widget="text" placeholder="e.g. Klassische GT und Tourenwagen"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_racefields" model="ir.actions.act_window">
+        <field name="name">goGP racefields</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">racefields</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_racefields_filter"/>
+        <field name="context">{}</field>
+        <field name="domain">[]</field>
+        <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a new document!
+                </p>
+            </field>
+    </record>
+
+
+</odoo>

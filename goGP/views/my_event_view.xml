@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+
+    <record id="view_my_event_tree" model="ir.ui.view">
+        <field name="name">my.event.tree</field>
+        <field name="model">my.event</field>
+        <field name="arch" type="xml">
+            <tree string="goGP myEvent" multi_edit="1" sample="1">
+                <field name="id"/>
+                <field name="event_id"/>
+                <field name="attendee_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_my_event_filter" model="ir.ui.view">
+        <field name="name">my_event.filter</field>
+        <field name="model">my.event</field>
+        <field name="arch" type="xml">
+            <search string="goGP myEvent">
+                <field name="event_id"/>
+                <field name="attendee_id"/>
+            </search>
+        </field>
+    </record>
+    <record id="view_my_event_form" model="ir.ui.view">
+        <field name="name">my_event.form</field>
+        <field name="model">my.event</field>
+        <field name="arch" type="xml">
+            <form string="goGP myEvent">
+                <sheet>
+                    <group>
+                        <div>
+                            <group col="2">
+                                <group>
+                                    <label for="attendee_id"/>
+                                    <div class="o_row">
+                                        <field name="attendee_id"/>
+                                    </div>
+                                    <label for="event_id"/>
+                                    <div class="o_row">
+                                        <field name="event_id"/>
+                                    </div>
+                                </group>
+                            </group>
+                        </div>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_my_event" model="ir.actions.act_window">
+        <field name="name">myEvent</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">my.event</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_my_event_filter"/>
+        <field name="context">{}</field>
+        <field name="domain">[]</field>
+        <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a new document!
+                </p>
+            </field>
+    </record>
+
+
+</odoo>

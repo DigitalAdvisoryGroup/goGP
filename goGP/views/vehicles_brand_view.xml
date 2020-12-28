@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+
+    <record id="view_vehicles_brands_tree" model="ir.ui.view">
+        <field name="name">vehicles.brands.tree</field>
+        <field name="model">vehicles.brands</field>
+        <field name="priority">2</field>
+        <field name="arch" type="xml">
+            <tree string="goGP vehicle brands">
+                <field name="name"/>
+                <field name="image_128" widget="image"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_vehicles_brands_tree" model="ir.ui.view">
+            <field name="name">vehicles.brands.tree</field>
+            <field name="model">vehicles.brands</field>
+            <field name="priority">2</field>
+            <field name="arch" type="xml">
+                <field name="name"/>
+            </field>
+    </record>
+
+    <record id="view_vehicles_brands_filter" model="ir.ui.view">
+        <field name="name">vehicles.brands.filter</field>
+        <field name="model">vehicles.brands</field>
+        <field name="arch" type="xml">
+            <search string="goGP vehicle brands">
+                <field name="name"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_vehicles_brands_form" model="ir.ui.view">
+        <field name="name">vehicles.brands.form</field>
+        <field name="model">vehicles.brands</field>
+        <field name="arch" type="xml">
+            <form string="goGP vehicle manufacturers">
+                <sheet>
+                    <group>
+                        <div>
+                            <field name="image_128" widget="image" class="oe_avatar"/>
+                            <label for="name" class="oe_edit_only"/>
+                            <h1>
+                                <field name="name"/>
+                            </h1>
+                        </div>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_vehicles_brands" model="ir.actions.act_window">
+        <field name="name">goGP vehicle brands</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">vehicles.brands</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_vehicles_brands_filter"/>
+        <field name="context">{}</field>
+        <field name="domain">[]</field>
+        <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a new document!
+                </p>
+            </field>
+    </record>
+
+
+</odoo>

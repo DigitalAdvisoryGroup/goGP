@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+        <!-- Top menu item -->
+        <menuitem id="gogp_menu_root"
+            name="goGP"
+            web_icon="goGP,static/description/icon.png"
+            sequence="1"/>
+
+        <menuitem id="gogp_mygp_menu"
+            name="myGP"
+            parent="gogp_menu_root"
+            sequence="1"/>
+
+        <menuitem id="gogp_myevent_menu"
+            name="myEvent"
+            parent="gogp_mygp_menu"
+            action="action_my_event"
+            sequence="1"/>
+
+        <menuitem id="gogp_nomination_menu"
+            name="Nomination"
+            parent="gogp_mygp_menu"
+            action="action_nomination"
+            sequence="2"/>
+
+        <menuitem id="gogp_myprofile_menu"
+            name="myProfile"
+            parent="gogp_mygp_menu"
+            action="action_my_profile"
+            sequence="3"/>
+
+        <menuitem id="gogp_vehicles_menu"
+            name="Vehicles"
+            parent="gogp_menu_root"
+            sequence="2"/>
+
+
+        <menuitem id="gogp_vehicles_menu_1"
+            name="goGP Vehicles"
+            parent="gogp_vehicles_menu"
+            action="action_vehicles"
+            sequence="1"/>
+
+        <menuitem id="gogp_brands_menu"
+            name="goGP Manufacturers"
+            parent="gogp_vehicles_menu"
+            action="action_vehicles_brands"
+            sequence="2"/>
+
+        <menuitem id="gogp_models_menu"
+            name="goGP Models"
+            parent="gogp_vehicles_menu"
+            action="action_vehicles_models"
+            sequence="3"/>
+
+        <menuitem id="gogp_racefields_menu"
+            name="Racefields"
+            parent="gogp_menu_root"
+            sequence="3"/>
+
+        <menuitem id="gogp_racefields_menu_1"
+            name="Racefields"
+            parent="gogp_racefields_menu"
+            action="action_racefields"
+            sequence="1"/>
+
+        <menuitem id="gogp_sg_menu"
+            name="Social Groups"
+            parent="gogp_menu_root"
+            sequence="4"/>
+
+        <menuitem id="gogp_social_group_menu"
+            name="Social Groups"
+            parent="gogp_sg_menu"
+            action="action_social_groups"
+            sequence="1"/>
+
+
+
+
+
+
+</odoo>

@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="view_vehicles_tree" model="ir.ui.view">
+            <field name="name">vehicles.tree</field>
+            <field name="model">vehicles</field>
+            <field name="arch" type="xml">
+                <tree string="goGP vehicles" multi_edit="1" sample="1">
+                    <field name="brand_id" widget="many2one_avatar"/>
+                    <field name="model_id" widget="many2one_avatar"/>
+                    <field name="driver_id" widget="many2one_avatar"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_vehicles_filter" model="ir.ui.view">
+            <field name="name">vehicles.filter</field>
+            <field name="model">vehicles</field>
+            <field name="arch" type="xml">
+                <search string="goGP vehicles">
+                    <field name="brand_id"/>
+                    <field name="model_id"/>
+                    <field name="license_plate"/>
+                </search>
+            </field>
+        </record>
+
+        <record id="view_vehicles_form" model="ir.ui.view">
+            <field name="name">vehicles.form</field>
+            <field name="model">vehicles</field>
+            <field name="arch" type="xml">
+                <form string="goGP vehicles">
+                    <sheet>
+                        <div class="oe_title">
+                            <field name="image_128" widget="image" class="oe_avatar"/>
+                            <label for="brand_id" class="oe_edit_only"/>
+                            <h1>
+                                <field name="brand_id" placeholder="e.g. Chevrolet"/>
+                            </h1>
+
+                            <label for="model_id" class="oe_edit_only"/>
+                            <h1>
+                                <field name="model_id" placeholder="e.g. Corvette"/>
+                            </h1>
+
+                            <label for="license_plate" class="oe_edit_only"/>
+                            <h2>
+                                <field name="license_plate" class="oe_inline" placeholder="e.g. PAE 326"/>
+                            </h2>
+                        </div>
+
+                        <group col="2">
+                            <group>
+                                <field name="active" invisible="1"/>
+                                <field name="vehicle_type" invisible="1"/>
+
+                                <label for="driver_id"/>
+                                <div class="o_row">
+                                    <field name="driver_id"/>
+                                </div>
+                                <field name="owner_id"/>
+                                <field name="location"/>
+                            </group>
+                            <group>
+                                <label for="odometer"/>
+                                <div class="o_row">
+                                    <field name="odometer"/>
+                                    <field name="odometer_unit"/>
+                                </div>
+                                <field name="acquisition_date" attrs="{'invisible': [('vehicle_type', '!=', 'car')]}"/>
+                                <field name="vin_sn"/>
+                                <field name="seats"/>
+                                <field name="doors"/>
+                                <field name="color"/>
+                                <field name="model_year"/>
+                            </group>
+                        </group>
+                        <group>
+                            <field name="description" widget="text" placeholder="Write here any other information related to this vehicle"/>
+                        </group>
+                        <group>
+                            <field name="modifications" widget="text" placeholder="Write here about modifications of this vehicle"/>
+                        </group>
+                        <notebook>
+                            <page string="Engine">
+                                <group>
+                                    <group>
+                                        <field name="transmission"/>
+                                        <field name="cm3"/>
+                                        <field name="cylinders"/>
+                                        <field name="horsepower"/>
+                                        <label for="power"/>
+                                        <div class="o_row">
+                                            <field name="power"/>
+                                            <span>kW</span>
+                                        </div>
+                                    </group>
+
+                                    <group>
+                                        <field name="fuel_type"/>
+                                        <label for="co2"/>
+
+                                        <div class="o_row" name="co2">
+                                            <field name="co2"/>
+                                            <span>g/km</span>
+                                        </div>
+                                    </group>
+                                </group>
+                            </page>
+                            <page string="Documents">
+                                <group>
+                                    <group>
+                                        <field name="fia_homologation"/>
+                                        <field name="fia_doc"/>
+                                        <field name="fia_periode"/>
+                                    </group>
+                                    <group>
+                                    </group>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_vehicles" model="ir.actions.act_window">
+            <field name="name">goGP vehicles</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">vehicles</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="view_vehicles_filter"/>
+            <field name="context">{}</field>
+            <field name="domain">[]</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a new document!
+                </p>
+            </field>
+        </record>
+
+
+    </data>
+
+</odoo>
