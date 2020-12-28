@@ -11,7 +11,7 @@ class VehiclesV(models.Model):
     _description = 'goGP Vehicles'
 
     image_128 = fields.Binary("Logo")
-    brand_id = fields.Many2one("vehicles.brands", string="Brand")
+    brand_id = fields.Many2one("vehicles.brands", related="model_id.brand_id", string="Brand")
     model_id = fields.Many2one("vehicles.models", string="Model")
     license_plate = fields.Char("License Plate")
     active = fields.Boolean("Active", default=True)
@@ -39,6 +39,13 @@ class VehiclesV(models.Model):
     fia_homologation = fields.Char("FIA Homologation:")
     fia_doc = fields.Char("FIA Document")
     fia_periode = fields.Char("FIA Period")
+
+    def name_get(self):
+        result = []
+        for rec in self:
+            name = rec.model_id.name + ' (' + rec.driver_id.name+')'
+            result.append((rec.id, name))
+        return result
 
 
 

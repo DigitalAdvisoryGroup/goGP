@@ -14,15 +14,6 @@
         </field>
     </record>
 
-    <record id="view_vehicles_brands_tree" model="ir.ui.view">
-            <field name="name">vehicles.brands.tree</field>
-            <field name="model">vehicles.brands</field>
-            <field name="priority">2</field>
-            <field name="arch" type="xml">
-                <field name="name"/>
-            </field>
-    </record>
-
     <record id="view_vehicles_brands_filter" model="ir.ui.view">
         <field name="name">vehicles.brands.filter</field>
         <field name="model">vehicles.brands</field>

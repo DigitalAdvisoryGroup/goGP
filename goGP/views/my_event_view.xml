@@ -10,6 +10,7 @@
                 <field name="id"/>
                 <field name="event_id"/>
                 <field name="attendee_id"/>
+                <field name="vehicle_id"/>
             </tree>
         </field>
     </record>
@@ -21,6 +22,7 @@
             <search string="goGP myEvent">
                 <field name="event_id"/>
                 <field name="attendee_id"/>
+                <field name="vehicle_id"/>
             </search>
         </field>
     </record>
@@ -41,6 +43,10 @@
                                     <label for="event_id"/>
                                     <div class="o_row">
                                         <field name="event_id"/>
+                                    </div>
+                                    <label for="vehicle_id"/>
+                                    <div class="o_row">
+                                        <field name="vehicle_id"/>
                                     </div>
                                 </group>
                             </group>

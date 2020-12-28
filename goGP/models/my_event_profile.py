@@ -13,6 +13,7 @@ class MyEvent(models.Model):
     name = fields.Char("myEvent name")
     attendee_id = fields.Many2one("res.partner",string="Attendee ID")
     event_id = fields.Many2one("event.event", string="Event ID")
+    vehicle_id = fields.Many2one("vehicles", string="Vehicle")
 
 
 class MyProfile(models.Model):

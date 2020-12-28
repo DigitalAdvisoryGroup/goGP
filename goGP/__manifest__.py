@@ -22,9 +22,10 @@ Description
     'author': "Digital Advisory Group GmbH, Candidroot Solutions Pvt. Ltd.",
     'website': "https://www.digitaladvisorygroup.io/",
     'category': 'Event',
-    'depends': ['event_enterprise','base'],
+    'depends': ['event_enterprise','sale'],
     'data': [
             "security/ir.model.access.csv",
+            "data/data.xml",
             "views/vehicles_view.xml",
             "views/vehicles_brand_view.xml",
             "views/vehicles_models_view.xml",
