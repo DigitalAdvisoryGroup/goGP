@@ -7,7 +7,7 @@ from odoo.exceptions import UserError
 
 
 class RaceFields(models.Model):
-    _name = 'racefields'
+    _name = 'gogp.racefields'
     _description = 'goGP race fields'
 
     name = fields.Char("Racefield name")
@@ -18,7 +18,7 @@ class RaceFields(models.Model):
 
 
 class RaceFieldsCodes(models.Model):
-    _name = 'racefield.codes'
+    _name = 'gogp.racefield.codes'
     _description = 'goGP codes for racefields'
 
     name = fields.Char("Racefield code name")

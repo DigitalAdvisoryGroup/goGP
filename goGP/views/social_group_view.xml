@@ -4,7 +4,7 @@
 
     <record id="view_social_groups_tree" model="ir.ui.view">
         <field name="name">social_groups.tree</field>
-        <field name="model">social_groups</field>
+        <field name="model">gogp.social_groups</field>
         <field name="arch" type="xml">
             <tree string="goGP social groups" multi_edit="1" sample="1">
                 <field name="name"/>
@@ -15,7 +15,7 @@
 
     <record id="view_social_groups_filter" model="ir.ui.view">
         <field name="name">social_groups.filter</field>
-        <field name="model">social_groups</field>
+        <field name="model">gogp.social_groups</field>
         <field name="arch" type="xml">
             <search string="goGP social groups">
                 <field name="name"/>
@@ -24,10 +24,18 @@
     </record>
     <record id="view_social_groups_form" model="ir.ui.view">
         <field name="name">social_groups.form</field>
-        <field name="model">social_groups</field>
+        <field name="model">gogp.social_groups</field>
         <field name="arch" type="xml">
             <form string="goGP social groups">
                 <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button order-4" name="action_subscriber_list" type="object" icon="fa-user" attrs="{'invisible':[('child_ids','=',False)]}">
+                            <field name="child_total_count" string="Child Subscriber" widget="statinfo"/>
+                        </button>
+                        <button class="oe_stat_button order-4" name="action_subscriber_list_total" type="object" icon="fa-user">
+                            <field name="total_count" string="Total Subscriber" widget="statinfo"/>
+                        </button>
+                    </div>
                     <div>
                         <label for="name" class="oe_edit_only"/>
                         <h1>
@@ -37,6 +45,14 @@
                     <group>
                         <field name="description" widget="text" placeholder="e.g. connect in case of an emergency"/>
                     </group>
+                    <group>
+                        <field name="id" invisible="1"/>
+                        <field name="parent_id" domain="[('parent_id','=',False),('id','!=',id)]"/>
+                        <field name="partner_ids" />
+                        <field name="child_ids" invisible="1"/>
+                        <field name="parent_id" invisible="1"/>
+                    </group>
+
                 </sheet>
             </form>
         </field>
@@ -45,7 +61,7 @@
     <record id="action_social_groups" model="ir.actions.act_window">
         <field name="name">goGP social groups</field>
         <field name="type">ir.actions.act_window</field>
-        <field name="res_model">social_groups</field>
+        <field name="res_model">gogp.social_groups</field>
         <field name="view_mode">tree,form</field>
         <field name="search_view_id" ref="view_social_groups_filter"/>
         <field name="context">{}</field>

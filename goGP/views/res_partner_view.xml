@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data>
+        <!-- res.partner inherit form view -->
+        <record id="view_partner_form_inehrit" model="ir.ui.view">
+            <field name="name">res.partner.inherit.view.form</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[@name='internal_notes']" position="after">
+                    <page name="mygp" string="MyGP">
+                        <group string="Social Groups">
+                            <field name="social_group_ids" nolabel="1" widget="many2many_tags"/>
+                        </group>
+                        <group string="Vehicles">
+                            <field name="vehicle_lines" nolabel="1"/>
+                        </group>
+                        <group string="Events">
+                            <field name="event_lines" nolabel="1"/>
+                        </group>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+
+
+    </data>
+</odoo>

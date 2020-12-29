@@ -4,7 +4,7 @@
 
     <record id="view_vehicles_models_tree" model="ir.ui.view">
         <field name="name">vehicles.models.tree</field>
-        <field name="model">vehicles.models</field>
+        <field name="model">gogp.vehicles.models</field>
         <field name="arch" type="xml">
             <tree string="goGP vehicle models" multi_edit="1" sample="1">
                 <field name="brand_id"/>
@@ -17,7 +17,7 @@
 
     <record id="view_vehicles_models_filter" model="ir.ui.view">
         <field name="name">vehicles.models.filter</field>
-        <field name="model">vehicles.models</field>
+        <field name="model">gogp.vehicles.models</field>
         <field name="arch" type="xml">
             <search string="goGP vehicle models">
                 <field name="brand_id"/>
@@ -30,7 +30,7 @@
 
     <record id="view_vehicles_models_form" model="ir.ui.view">
         <field name="name">vehicles.models.form</field>
-        <field name="model">vehicles.models</field>
+        <field name="model">gogp.vehicles.models</field>
         <field name="arch" type="xml">
             <form string="goGP vehicles models">
                 <sheet>
@@ -76,7 +76,7 @@
     <record id="action_vehicles_models" model="ir.actions.act_window">
         <field name="name">goGP vehicle models</field>
         <field name="type">ir.actions.act_window</field>
-        <field name="res_model">vehicles.models</field>
+        <field name="res_model">gogp.vehicles.models</field>
         <field name="view_mode">tree,form</field>
         <field name="search_view_id" ref="view_vehicles_models_filter"/>
         <field name="context">{}</field>

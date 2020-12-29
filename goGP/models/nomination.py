@@ -7,7 +7,7 @@ from odoo.exceptions import UserError
 
 
 class Nomination(models.Model):
-    _name = 'nomination'
+    _name = 'gogp.nomination'
     _description = 'goGP nomination'
 
     name = fields.Char("Nomination name")

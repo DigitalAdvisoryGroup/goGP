@@ -6,13 +6,13 @@ from odoo.exceptions import UserError
 
 
 class VehiclesV(models.Model):
-    _name = 'vehicles'
+    _name = 'gogp.vehicles'
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _description = 'goGP Vehicles'
 
     image_128 = fields.Binary("Logo")
-    brand_id = fields.Many2one("vehicles.brands", related="model_id.brand_id", string="Brand")
-    model_id = fields.Many2one("vehicles.models", string="Model")
+    brand_id = fields.Many2one("gogp.vehicles.brands", related="model_id.brand_id", string="Brand")
+    model_id = fields.Many2one("gogp.vehicles.models", string="Model")
     license_plate = fields.Char("License Plate")
     active = fields.Boolean("Active", default=True)
     vehicle_type = fields.Selection(related="model_id.vehicle_type", string="Vehicle Type")
@@ -50,22 +50,22 @@ class VehiclesV(models.Model):
 
 
 class VehiclesBrand(models.Model):
-    _name = 'vehicles.brands'
+    _name = 'gogp.vehicles.brands'
     _description = 'goGP Vehicle Brands'
 
     name = fields.Char("Make")
     image_128 = fields.Binary("Logo")
     model_count = fields.Integer("Model Count")
-    model_ids = fields.One2many("vehicles.models", "brand_id", string="Model")
+    model_ids = fields.One2many("gogp.vehicles.models", "brand_id", string="Model")
 
 
 class VehiclesModels(models.Model):
-    _name = 'vehicles.models'
+    _name = 'gogp.vehicles.models'
     _description = 'goGP Vehicle Models'
 
     name = fields.Char("Model name")
     active = fields.Boolean("Active", default=True)
-    brand_id = fields.Many2one("vehicles.brands", string="Manufacturer")
+    brand_id = fields.Many2one("gogp.vehicles.brands", string="Manufacturer")
     image_128 = fields.Binary("Logo", related="brand_id.image_128")
     manager_id = fields.Many2one("res.users", string="Fleet Manager")
     vendor_ids = fields.Many2many("res.partner", string="Vendors")

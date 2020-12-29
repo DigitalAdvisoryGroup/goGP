@@ -4,7 +4,7 @@
 
     <record id="view_my_event_tree" model="ir.ui.view">
         <field name="name">my.event.tree</field>
-        <field name="model">my.event</field>
+        <field name="model">gogp.my.event</field>
         <field name="arch" type="xml">
             <tree string="goGP myEvent" multi_edit="1" sample="1">
                 <field name="id"/>
@@ -17,7 +17,7 @@
 
     <record id="view_my_event_filter" model="ir.ui.view">
         <field name="name">my_event.filter</field>
-        <field name="model">my.event</field>
+        <field name="model">gogp.my.event</field>
         <field name="arch" type="xml">
             <search string="goGP myEvent">
                 <field name="event_id"/>
@@ -28,7 +28,7 @@
     </record>
     <record id="view_my_event_form" model="ir.ui.view">
         <field name="name">my_event.form</field>
-        <field name="model">my.event</field>
+        <field name="model">gogp.my.event</field>
         <field name="arch" type="xml">
             <form string="goGP myEvent">
                 <sheet>
@@ -60,7 +60,7 @@
     <record id="action_my_event" model="ir.actions.act_window">
         <field name="name">myEvent</field>
         <field name="type">ir.actions.act_window</field>
-        <field name="res_model">my.event</field>
+        <field name="res_model">gogp.my.event</field>
         <field name="view_mode">tree,form</field>
         <field name="search_view_id" ref="view_my_event_filter"/>
         <field name="context">{}</field>

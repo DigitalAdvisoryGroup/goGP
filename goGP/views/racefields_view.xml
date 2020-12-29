@@ -4,7 +4,7 @@
 
     <record id="view_racefields_tree" model="ir.ui.view">
         <field name="name">vehicles.brands.tree</field>
-        <field name="model">racefields</field>
+        <field name="model">gogp.racefields</field>
         <field name="arch" type="xml">
             <tree string="goGP racefields" multi_edit="1" sample="1">
                 <field name="name"/>
@@ -16,7 +16,7 @@
 
     <record id="view_racefields_filter" model="ir.ui.view">
         <field name="name">racefields.filter</field>
-        <field name="model">racefields</field>
+        <field name="model">gogp.racefields</field>
         <field name="arch" type="xml">
             <search string="goGP racefields">
                 <field name="name"/>
@@ -27,7 +27,7 @@
     </record>
     <record id="view_racefields_form" model="ir.ui.view">
         <field name="name">racefields.form</field>
-        <field name="model">racefields</field>
+        <field name="model">gogp.racefields</field>
         <field name="arch" type="xml">
             <form string="goGP racefields">
                 <sheet>
@@ -52,7 +52,7 @@
     <record id="action_racefields" model="ir.actions.act_window">
         <field name="name">goGP racefields</field>
         <field name="type">ir.actions.act_window</field>
-        <field name="res_model">racefields</field>
+        <field name="res_model">gogp.racefields</field>
         <field name="view_mode">tree,form</field>
         <field name="search_view_id" ref="view_racefields_filter"/>
         <field name="context">{}</field>

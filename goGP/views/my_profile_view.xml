@@ -4,7 +4,7 @@
 
     <record id="view_my_profile_tree" model="ir.ui.view">
         <field name="name">my.profile.tree</field>
-        <field name="model">my.profile</field>
+        <field name="model">gogp.my.profile</field>
         <field name="arch" type="xml">
             <tree string="goGP myprofile" multi_edit="1" sample="1">
                 <field name="name"/>
@@ -14,7 +14,7 @@
 
     <record id="view_my_profile_filter" model="ir.ui.view">
         <field name="name">my_profile.filter</field>
-        <field name="model">my.profile</field>
+        <field name="model">gogp.my.profile</field>
         <field name="arch" type="xml">
             <search string="goGP myprofile">
                 <field name="name"/>
@@ -23,7 +23,7 @@
     </record>
     <record id="view_my_profile_form" model="ir.ui.view">
         <field name="name">my_profile.form</field>
-        <field name="model">my.profile</field>
+        <field name="model">gogp.my.profile</field>
         <field name="arch" type="xml">
             <form string="goGP myProfile">
                 <sheet>
@@ -43,7 +43,7 @@
     <record id="action_my_profile" model="ir.actions.act_window">
         <field name="name">myProfile</field>
         <field name="type">ir.actions.act_window</field>
-        <field name="res_model">my.profile</field>
+        <field name="res_model">gogp.my.profile</field>
         <field name="view_mode">tree,form</field>
         <field name="search_view_id" ref="view_my_profile_filter"/>
         <field name="context">{}</field>

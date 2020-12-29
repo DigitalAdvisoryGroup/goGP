@@ -4,7 +4,7 @@
 
     <record id="view_nomination_tree" model="ir.ui.view">
         <field name="name">nomination.tree</field>
-        <field name="model">nomination</field>
+        <field name="model">gogp.nomination</field>
         <field name="arch" type="xml">
             <tree string="goGP nomination" multi_edit="1" sample="1">
                 <field name="name"/>
@@ -14,7 +14,7 @@
 
     <record id="view_nomination_filter" model="ir.ui.view">
         <field name="name">nomination.filter</field>
-        <field name="model">nomination</field>
+        <field name="model">gogp.nomination</field>
         <field name="arch" type="xml">
             <search string="goGP nomination">
                 <field name="name"/>
@@ -23,7 +23,7 @@
     </record>
     <record id="view_nomination_form" model="ir.ui.view">
         <field name="name">nomination.form</field>
-        <field name="model">nomination</field>
+        <field name="model">gogp.nomination</field>
         <field name="arch" type="xml">
             <form string="goGP nomination">
                 <sheet>
@@ -43,7 +43,7 @@
     <record id="action_nomination" model="ir.actions.act_window">
         <field name="name">Nomination</field>
         <field name="type">ir.actions.act_window</field>
-        <field name="res_model">nomination</field>
+        <field name="res_model">gogp.nomination</field>
         <field name="view_mode">tree,form</field>
         <field name="search_view_id" ref="view_nomination_filter"/>
         <field name="context">{}</field>

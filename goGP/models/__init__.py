@@ -7,3 +7,4 @@ from . import my_event_profile
 from . import nomination
 from . import racefields
 from . import social_groups
+from . import res_partner
