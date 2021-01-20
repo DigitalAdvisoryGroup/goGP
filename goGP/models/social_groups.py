@@ -5,12 +5,21 @@ from odoo import models, api, fields, _
 from odoo.exceptions import UserError
 
 
+class SocialGroups(models.Model):
+    _name = 'gogp.social_groups.type'
+    _description = 'goGP social groups type'
+
+    name = fields.Char("Name")
+    code = fields.Char("Code")
+
 
 class SocialGroups(models.Model):
     _name = 'gogp.social_groups'
     _description = 'goGP social groups'
 
-    name = fields.Char("Social group name")
+    name = fields.Char("Social group name", translate=True)
+    type = fields.Many2one("gogp.social_groups.type", string="Type", required=True)
+    is_public_group = fields.Boolean("Is Public Group", default=False)
     description = fields.Text("Description")
     partner_ids = fields.Many2many('res.partner', 'social_group_partner_rel', 'social_group_id', 'partner_id', string="Partner")
     parent_id = fields.Many2one("gogp.social_groups", string="Parent")

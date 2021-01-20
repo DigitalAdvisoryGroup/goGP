@@ -53,7 +53,7 @@
                         <group col="2">
                             <group>
                                 <field name="active" invisible="1"/>
-                                <field name="vehicle_type" invisible="1"/>
+                                <field name="vehicle_type_id" invisible="1"/>
 
                                 <label for="driver_id"/>
                                 <div class="o_row">
@@ -68,7 +68,7 @@
                                     <field name="odometer"/>
                                     <field name="odometer_unit"/>
                                 </div>
-                                <field name="acquisition_date" attrs="{'invisible': [('vehicle_type', '!=', 'car')]}"/>
+                                <field name="acquisition_date" />
                                 <field name="vin_sn"/>
                                 <field name="seats"/>
                                 <field name="doors"/>

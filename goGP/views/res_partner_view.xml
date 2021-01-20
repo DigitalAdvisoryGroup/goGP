@@ -10,7 +10,7 @@
                 <xpath expr="//page[@name='internal_notes']" position="after">
                     <page name="mygp" string="MyGP">
                         <group string="Social Groups">
-                            <field name="social_group_ids" nolabel="1" widget="many2many_tags"/>
+                            <field name="social_group_ids" nolabel="1" />
                         </group>
                         <group string="Vehicles">
                             <field name="vehicle_lines" nolabel="1"/>

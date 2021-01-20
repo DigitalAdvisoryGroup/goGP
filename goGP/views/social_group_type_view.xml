@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+
+    <record id="view_social_group_type_tree" model="ir.ui.view">
+        <field name="name">gogp.social_groups.type.tree</field>
+        <field name="model">gogp.social_groups.type</field>
+        <field name="arch" type="xml">
+            <tree string="goGP vehicle models type" multi_edit="1" sample="1">
+                <field name="name"/>
+                <field name="code"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_social_group_type_filter" model="ir.ui.view">
+        <field name="name">gogp.social_groups.type.filter</field>
+        <field name="model">gogp.social_groups.type</field>
+        <field name="arch" type="xml">
+            <search string="goGP vehicle models type">
+                <field name="name"/>
+                <field name="code"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_social_group_type_form" model="ir.ui.view">
+        <field name="name">vehicles.models.form</field>
+        <field name="model">gogp.social_groups.type</field>
+        <field name="arch" type="xml">
+            <form string="goGP vehicles models type">
+                <sheet>
+                    <div class="oe_title">
+
+                        <label for="name" class="oe_edit_only"/>
+                        <h1>
+                            <field name="name" placeholder="e.g. Car"/>
+                        </h1>
+
+                        <label for="code" class="oe_edit_only"/>
+                        <h2>
+                            <field name="code" placeholder="e.g. Car"/>
+                        </h2>
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_social_group_type" model="ir.actions.act_window">
+        <field name="name">goGP vehicle models</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">gogp.social_groups.type</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_social_group_type_filter"/>
+        <field name="context">{}</field>
+        <field name="domain">[]</field>
+        <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a new document!
+                </p>
+            </field>
+    </record>
+
+
+</odoo>

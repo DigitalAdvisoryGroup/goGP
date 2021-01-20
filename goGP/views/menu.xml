@@ -76,6 +76,23 @@
             action="action_social_groups"
             sequence="1"/>
 
+        <menuitem id="gogp_config_menu"
+            name="Configuration"
+            parent="gogp_menu_root"
+            sequence="100"/>
+
+        <menuitem id="gogp_vehicle_model_type_menu"
+            name="Model Type"
+            parent="gogp_config_menu"
+            action="action_vehicles_models_type"
+            sequence="1"/>
+
+        <menuitem id="gogp_social_group_type_menu"
+            name="Social Group Type"
+            parent="gogp_config_menu"
+            action="action_social_group_type"
+            sequence="1"/>
+
 
 
 

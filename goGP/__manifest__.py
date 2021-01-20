@@ -28,6 +28,8 @@ Description
             "data/data.xml",
             "views/vehicles_view.xml",
             "views/vehicles_brand_view.xml",
+            "views/vehicles_models_type_view.xml",
+            "views/social_group_type_view.xml",
             "views/vehicles_models_view.xml",
             "views/racefields_view.xml",
             "views/social_group_view.xml",

@@ -15,7 +15,7 @@ class VehiclesV(models.Model):
     model_id = fields.Many2one("gogp.vehicles.models", string="Model")
     license_plate = fields.Char("License Plate")
     active = fields.Boolean("Active", default=True)
-    vehicle_type = fields.Selection(related="model_id.vehicle_type", string="Vehicle Type")
+    vehicle_type_id = fields.Many2one(related="model_id.vehicle_type_id", string="Vehicle Type")
     driver_id = fields.Many2one("res.partner", "Driver")
     owner_id = fields.Many2one("res.partner", "Owner")
     location = fields.Char("Location")
@@ -69,8 +69,16 @@ class VehiclesModels(models.Model):
     image_128 = fields.Binary("Logo", related="brand_id.image_128")
     manager_id = fields.Many2one("res.users", string="Fleet Manager")
     vendor_ids = fields.Many2many("res.partner", string="Vendors")
-    vehicle_type = fields.Selection([('car','Car')], string="Vehicle Type")
+    vehicle_type_id = fields.Many2one("gogp.vehicles.models.type", string="Vehicle Type")
     nickname = fields.Char("NickName")
+
+
+class VehiclesModelsType(models.Model):
+    _name = 'gogp.vehicles.models.type'
+    _description = 'goGP Vehicle Models Type'
+
+    name = fields.Char("Name")
+    code = fields.Char("Code")
 
 
 

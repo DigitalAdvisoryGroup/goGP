@@ -9,3 +9,5 @@ access_racefields,access_racefields,model_gogp_racefields,base.group_user,1,1,1,
 access_racefield_codes,access_racefield_codes,model_gogp_racefield_codes,base.group_user,1,1,1,1
 access_social_groups,access_social_groups,model_gogp_social_groups,base.group_user,1,1,1,1
 access_social_groups_codes,access_social_groups_codes,model_gogp_social_groups_codes,base.group_user,1,1,1,1
+access_gogp_vehicles_models_type,access_gogp_vehicles_models_type,model_gogp_vehicles_models_type,base.group_user,1,1,1,1
+access_gogp_social_groups_type,access_gogp_social_groups_type,model_gogp_social_groups_type,base.group_user,1,1,1,1

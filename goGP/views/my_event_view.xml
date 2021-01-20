@@ -46,7 +46,7 @@
                                     </div>
                                     <label for="vehicle_id"/>
                                     <div class="o_row">
-                                        <field name="vehicle_id"/>
+                                        <field name="vehicle_id" domain="[('driver_id','=',attendee_id)]"/>
                                     </div>
                                 </group>
                             </group>
