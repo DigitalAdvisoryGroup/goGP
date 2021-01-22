@@ -70,7 +70,7 @@ class goGPPortal(CustomerPortal):
         return request.render("goGP.portal_my_gogp_events", values)
 
     @http.route(['/my/gogp/vehicles', '/my/gogp/vehicles/page/<int:page>'], type='http', auth="user", website=True)
-    def portal_my_gogp_event(self, page=1, date_begin=None, date_end=None, sortby=None, **kw):
+    def portal_my_gogp_vehicle(self, page=1, date_begin=None, date_end=None, sortby=None, **kw):
         values = self._prepare_portal_layout_values()
         partner = request.env.user.partner_id
         goGPmyvehicle = request.env['gogp.vehicles']
@@ -115,7 +115,7 @@ class goGPPortal(CustomerPortal):
         return request.render("goGP.portal_my_gogp_vehicles", values)
 
     @http.route(['/my/gogp/groups', '/my/gogp/groups/page/<int:page>'], type='http', auth="user", website=True)
-    def portal_my_gogp_event(self, page=1, date_begin=None, date_end=None, sortby=None, **kw):
+    def portal_my_gogp_groups(self, page=1, date_begin=None, date_end=None, sortby=None, **kw):
         values = self._prepare_portal_layout_values()
         partner = request.env.user.partner_id
         goGPmygroups = request.env['gogp.social_groups']
