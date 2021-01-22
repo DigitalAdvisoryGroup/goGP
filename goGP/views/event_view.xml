@@ -44,6 +44,13 @@
         </t>
     </template>
 
+    <template id="portal_layout_gogp" name="Portal layout : goGP" inherit_id="portal.portal_layout" >
+        <xpath expr="//div[hasclass('o_my_sidebar')]" position="replace">
+            <div class="col-12 col-md col-lg-6 oe_structure"></div>
+        </xpath>
+    </template>
+
+
     <template id="portal_my_home_menu_gogp" name="Portal layout : goGP menu entries" inherit_id="portal.portal_breadcrumbs" priority="20">
         <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
             <li t-if="page_name == 'myevent'" t-attf-class="breadcrumb-item #{'active ' if not myevent else ''}">
@@ -77,6 +84,16 @@
                 <t t-set="placeholder_count" t-value="'mygroups_count'"/>
             </t>
 
+            <t t-call="portal.portal_docs_entry">
+                <t t-set="title">My Account</t>
+                <t t-set="url" t-value="'/my/account'"/>
+            </t>
+
+            <t t-call="portal.portal_docs_entry">
+                <t t-set="title">Security</t>
+                <t t-set="url" t-value="'/my/security'"/>
+            </t>
+
         </xpath>
     </template>
 
@@ -96,12 +113,14 @@
                     <tr class="active">
                         <th class="text-center">Event</th>
                         <th class="text-center">Vehicle</th>
+                        <th class="text-center">Image</th>
                     </tr>
                 </thead>
                 <t t-foreach="myevents" t-as="myevent">
                     <tr>
                         <td class="text-center"><span t-field="myevent.event_id.name"/></td>
-                        <td class="text-center"><span t-field="myevent.vehicle_id.license_plate"/></td>
+                        <td class="text-center"><span t-field="myevent.vehicle_id.brand_id.name"/>-<span t-field="myevent.vehicle_id.model_id.name"/></td>
+                        <td class="text-center"><img alt="Avatar" t-attf-src="/web/image/gogp.vehicles/#{myevent.vehicle_id.id}/image_128/50x50" /></td>
                     </tr>
                 </t>
             </t>
