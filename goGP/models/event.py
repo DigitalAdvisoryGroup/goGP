@@ -17,5 +17,4 @@ class EventTicket(models.Model):
     _order = 'sequence'
 
     sequence = fields.Integer('Sequence', default=1)
-    max_purchase = fields.Integer(related="product_id.max_purchase", string="Max Purchase", store=True)
 
