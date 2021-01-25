@@ -23,7 +23,7 @@
 
     <template id="user_dropdown_gogp" name="Portal User Dropdown" inherit_id="portal.user_dropdown">
         <xpath expr="//t[@t-set='is_connected']" position="after">
-            <t t-if="user_id.image_256">
+            <t t-if="user_id.sudo().image_256">
                 <t t-set="_icon" t-value="False"/>
                 <t t-set="_avatar" t-value="True"/>
             </t>
