@@ -188,3 +188,16 @@ class CustomWebsiteEventController(WebsiteEventController):
             return request.render("goGP.event_auth_required", {'event': event.sudo(), 'redirect_url': redirect_url})
         else:
             return super(CustomWebsiteEventController, self).event_register(event, **post)
+
+    def _create_attendees_from_registration_post(self, event, registration_data):
+        res = super(CustomWebsiteEventController, self)._create_attendees_from_registration_post(event,registration_data)
+        gogp_myevent_vals = {
+            "attendee_id": res.partner_id.id,
+            "event_id": res.event_id.id,
+            "event_registration_id": res.id,
+        }
+        request.env['gogp.my.event'].sudo().create(gogp_myevent_vals)
+        return res
+
+
+
