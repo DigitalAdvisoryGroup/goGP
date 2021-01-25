@@ -85,13 +85,20 @@
             name="Model Type"
             parent="gogp_config_menu"
             action="action_vehicles_models_type"
-            sequence="1"/>
+            sequence="10"/>
 
         <menuitem id="gogp_social_group_type_menu"
             name="Social Group Type"
             parent="gogp_config_menu"
             action="action_social_group_type"
-            sequence="1"/>
+            sequence="20"/>
+
+
+        <menuitem id="gogp_vehicle_fuel_type_menu"
+            name="Fuel Type"
+            parent="gogp_config_menu"
+            action="action_vehicles_fuel_type"
+            sequence="30"/>
 
 
 

@@ -14,6 +14,7 @@ class RaceFields(models.Model):
     sort_order = fields.Float("Sort Order")
     event_id = fields.Many2one("event.event", string="Event")
     description = fields.Text("Description")
+    image_128 = fields.Binary("Logo")
 
 
 

@@ -11,3 +11,4 @@ access_social_groups,access_social_groups,model_gogp_social_groups,,1,1,1,1
 access_social_groups_codes,access_social_groups_codes,model_gogp_social_groups_codes,,1,1,1,1
 access_gogp_vehicles_models_type,access_gogp_vehicles_models_type,model_gogp_vehicles_models_type,,1,1,1,1
 access_gogp_social_groups_type,access_gogp_social_groups_type,model_gogp_social_groups_type,,1,1,1,1
+access_gogp_vehicles_fuel_type,access_gogp_vehicles_fuel_type,model_gogp_vehicles_fuel_type,,1,1,1,1

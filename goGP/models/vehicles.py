@@ -34,7 +34,7 @@ class VehiclesV(models.Model):
     cylinders = fields.Integer("Cylinders")
     horsepower = fields.Integer("Horsepower")
     power = fields.Integer("Power")
-    fuel_type = fields.Selection([('','')],string="Fuel Type")
+    fuel_type_id = fields.Many2one("gogp.vehicles.fuel.type",string="Fuel Type")
     co2 = fields.Float("CO2 Emissions")
     fia_homologation = fields.Char("FIA Homologation:")
     fia_doc = fields.Char("FIA Document")
@@ -47,6 +47,12 @@ class VehiclesV(models.Model):
             result.append((rec.id, name))
         return result
 
+
+class VehiclesFuelType(models.Model):
+    _name = 'gogp.vehicles.fuel.type'
+    _description = 'goGP Vehicle Fuel Type'
+
+    name = fields.Char("Name", translate=True)
 
 
 class VehiclesBrand(models.Model):

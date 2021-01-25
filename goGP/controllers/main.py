@@ -5,9 +5,28 @@ from odoo.http import request
 from odoo.addons.http_routing.models.ir_http import slug
 from odoo.addons.website_event.controllers.main import WebsiteEventController
 from odoo.addons.portal.controllers.portal import CustomerPortal, pager as portal_pager, get_records_pager
+import base64
 
 
 class goGPPortal(CustomerPortal):
+
+    @http.route()
+    def account(self, redirect=None, **post):
+        if 'image_1920' in post:
+            image_1920 = post.get('image_1920')
+            if image_1920:
+                image_1920 = image_1920.read()
+                image_1920 = base64.b64encode(image_1920)
+                request.env.user.partner_id.sudo().write({
+                    'image_1920': image_1920
+                })
+            post.pop('image_1920')
+        if 'clear_avatar' in post:
+            request.env.user.partner_id.sudo().write({
+                'image_1920': False
+            })
+            post.pop('clear_avatar')
+        return super(goGPPortal, self).account(redirect=redirect, **post)
 
     def _prepare_home_portal_values(self, counters):
         values = super()._prepare_home_portal_values(counters)

@@ -9,7 +9,7 @@ class SocialGroups(models.Model):
     _name = 'gogp.social_groups.type'
     _description = 'goGP social groups type'
 
-    name = fields.Char("Name")
+    name = fields.Char("Name", translate=True)
     code = fields.Char("Code")
 
 
@@ -26,6 +26,7 @@ class SocialGroups(models.Model):
     child_ids = fields.One2many('gogp.social_groups', 'parent_id', string="Child Groups")
     total_count = fields.Integer("Total Subscribers", compute="compute_total_count")
     child_total_count = fields.Integer("Child Subscribers", compute="compute_total_count")
+    image_128 = fields.Binary("Logo")
 
     def action_subscriber_list(self):
         action = self.env.ref('contacts.action_contacts').read()[0]

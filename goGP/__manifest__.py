@@ -26,11 +26,13 @@ Description
     'data': [
             "security/ir.model.access.csv",
             "data/data.xml",
+            "views/assets.xml",
             "views/vehicles_view.xml",
             "views/vehicles_brand_view.xml",
             "views/vehicles_models_type_view.xml",
             "views/social_group_type_view.xml",
             "views/vehicles_models_view.xml",
+            "views/vehicles_fuel_type_view.xml",
             "views/racefields_view.xml",
             "views/social_group_view.xml",
             "views/my_event_view.xml",
@@ -38,6 +40,7 @@ Description
             "views/my_profile_view.xml",
             "views/res_partner_view.xml",
             "views/event_view.xml",
+            "views/portal_views.xml",
             "views/menu.xml",
     ],
     'demo': [

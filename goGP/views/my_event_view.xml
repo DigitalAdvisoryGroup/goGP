@@ -31,6 +31,7 @@
         <field name="model">gogp.my.event</field>
         <field name="arch" type="xml">
             <form string="goGP myEvent">
+
                 <sheet>
                     <group>
                         <div>
@@ -43,6 +44,14 @@
                                     <label for="event_id"/>
                                     <div class="o_row">
                                         <field name="event_id"/>
+                                    </div>
+                                    <label for="event_registration_id"/>
+                                    <div class="o_row">
+                                        <field name="event_registration_id" domain="[('partner_id','=',attendee_id),('event_id','=',event_id)]"/>
+                                    </div>
+                                    <label for="state"/>
+                                    <div class="o_row">
+                                        <field name="state"/>
                                     </div>
                                     <label for="vehicle_id"/>
                                     <div class="o_row">
