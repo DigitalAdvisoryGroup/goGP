@@ -9,7 +9,7 @@ from odoo.exceptions import UserError
 class ProductTemplate(models.Model):
     _inherit = 'product.template'
 
-    max_purchase = fields.Integer("Max Purchase")
+    is_exclusive = fields.Boolean("Is Exclusive")
 
 
 class ProductPricelistItem(models.Model):
@@ -92,9 +92,6 @@ class ProductPricelist(models.Model):
 
             price_uom = self.env['uom.uom'].browse([qty_uom_id])
             for rule in items:
-                print("---------rule-------",rule)
-                print("---------membership_ids-------",rule.membership_ids)
-                print("-----self.env.user.partner---------", self.env.user.partner_id)
                 if rule.min_quantity and qty_in_product_uom < rule.min_quantity:
                     continue
                 if is_product_template:

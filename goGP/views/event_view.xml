@@ -22,9 +22,22 @@
             <field name="name" position="before">
                 <field name="sequence" widget="handle"/>
             </field>
+            <field name="product_id" position="after">
+                <field name="is_exclusive" />
+                <field name="is_registered" />
+            </field>
         </field>
     </record>
-
+    <record id="gogp_product_template_form" model="ir.ui.view">
+             <field name="name">product.template.event.form.inherit</field>
+             <field name="model">product.template</field>
+             <field name="inherit_id" ref="product.product_template_form_view" />
+             <field name="arch" type="xml">
+                 <field name="event_ok" position="after">
+                     <field name="is_exclusive" />
+                 </field>
+             </field>
+        </record>
 
     <record id="product_pricelist_item_tree_view_from_product_gogp" model="ir.ui.view">
         <field name="name">product.pricelist.item.tree.tree</field>
@@ -55,6 +68,12 @@
         </t>
     </template>
 
+    <template id="registration_template_gogp" name="Registration" inherit_id="website_event.registration_template">
+        <xpath expr='//t[@t-set="tickets"]' position="replace">
+            <t t-set="tickets" t-value="event.event_ticket_ids.filtered(lambda ticket: not ticket.is_expired and not ticket.is_registered)"/>
+        </xpath>
+    </template>
+
     <template id="portal_layout_gogp" name="Portal layout : goGP" inherit_id="portal.portal_layout" >
         <xpath expr="//div[hasclass('o_my_sidebar')]" position="replace">
             <div class="col-12 col-md col-lg-6 oe_structure"></div>
@@ -77,12 +96,17 @@
     </template>
 
 
-    <template id="portal_my_home_gogp" name="Show goGP Details" customize_show="True" inherit_id="portal.portal_my_home" priority="200">
+    <template id="portal_my_home_gogp" name="Show goGP Details" customize_show="True" inherit_id="portal.portal_my_home" priority="1">
         <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+
             <t t-call="portal.portal_docs_entry">
-                <t t-set="title">My Events</t>
-                <t t-set="url" t-value="'/my/gogp/events'"/>
-                <t t-set="placeholder_count" t-value="'myevent_count'"/>
+                <t t-set="title">My Account</t>
+                <t t-set="url" t-value="'/my/account'"/>
+            </t>
+            <t t-call="portal.portal_docs_entry">
+                <t t-set="title">My Groups</t>
+                <t t-set="url" t-value="'/my/gogp/groups'"/>
+                <t t-set="placeholder_count" t-value="'mygroups_count'"/>
             </t>
             <t t-call="portal.portal_docs_entry">
                 <t t-set="title">My Vehicles</t>
@@ -90,15 +114,11 @@
                 <t t-set="placeholder_count" t-value="'myvehicle_count'"/>
             </t>
             <t t-call="portal.portal_docs_entry">
-                <t t-set="title">My Groups</t>
-                <t t-set="url" t-value="'/my/gogp/groups'"/>
-                <t t-set="placeholder_count" t-value="'mygroups_count'"/>
+                <t t-set="title">My Events</t>
+                <t t-set="url" t-value="'/my/gogp/events'"/>
+                <t t-set="placeholder_count" t-value="'myevent_count'"/>
             </t>
 
-            <t t-call="portal.portal_docs_entry">
-                <t t-set="title">My Account</t>
-                <t t-set="url" t-value="'/my/account'"/>
-            </t>
 
             <t t-call="portal.portal_docs_entry">
                 <t t-set="title">Security</t>
@@ -122,19 +142,59 @@
             <t t-if="myevents" t-call="portal.portal_table">
                 <thead>
                     <tr class="active">
-                        <th class="text-center">Event</th>
-                        <th class="text-center">Vehicle</th>
-                        <th class="text-center">Image</th>
+                        <th class="text-left">Event</th>
+                        <th class="text-left">Vehicle</th>
+                        <th class="text-left">Image</th>
+                        <th class="text-left"></th>
                     </tr>
                 </thead>
                 <t t-foreach="myevents" t-as="myevent">
                     <tr>
-                        <td class="text-center"><span t-field="myevent.event_id.name"/></td>
-                        <td class="text-center"><span t-field="myevent.vehicle_id.brand_id.name"/>-<span t-field="myevent.vehicle_id.model_id.name"/></td>
-                        <td class="text-center"><img alt="Avatar" t-attf-src="/web/image/gogp.vehicles/#{myevent.vehicle_id.id}/image_128/50x50" /></td>
+                        <td class="text-left"><span t-field="myevent.event_id.name"/></td>
+                        <td class="text-left"><span t-field="myevent.vehicle_id.brand_id.name"/>-<span t-field="myevent.vehicle_id.model_id.name"/></td>
+                        <td class="text-left"><img alt="Avatar" t-attf-src="/web/image/gogp.vehicles/#{myevent.vehicle_id.id}/image_128/50x50" /></td>
+                        <td class="text-right">
+                            <a t-att-href="'/my/gogp/event/%s' % (slug(myevent))" class="btn btn-primary">Edit</a>
+                        </td>
                     </tr>
                 </t>
             </t>
+        </t>
+    </template>
+
+    <template id="portal_my_gogp_event_details" name="My goGP Event Detail">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">My Event Details</t>
+            </t>
+            <form t-att-action="'/my/gogp/event/%s' % (slug(myevent))" method="post">
+                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                <div class="row o_portal_details">
+                    <div class="col-lg-8">
+                        <div class="row">
+                            <div t-attf-class="form-group #{error.get('vehicle_id') and 'o_has_error' or ''} col-xl-6">
+                                <label class="col-form-label" for="vehicle_id">Vehicle</label>
+                                <select name="vehicle_id" t-attf-class="form-control #{error.get('vehicle_id') and 'is-invalid' or ''}">
+                                    <option value="">Vehicle...</option>
+                                    <t t-foreach="vehicles or []" t-as="vehicle">
+                                        <option t-att-value="vehicle.id" >
+                                            <t t-esc="vehicle.brand_id.name" />-<t t-esc="vehicle.model_id.name" />
+                                        </option>
+                                    </t>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="clearfix">
+                            <button type="submit" class="btn btn-primary float-right mb32 ">
+                                Confirm
+                                <span class="fa fa-long-arrow-right" />
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
         </t>
     </template>
 
@@ -151,21 +211,112 @@
             <t t-if="myvehicles" t-call="portal.portal_table">
                 <thead>
                     <tr class="active">
-                        <th class="text-center">Brand</th>
-                        <th class="text-center">Model</th>
-                        <th class="text-center">License Plate</th>
+                        <th class="text-left">Brand</th>
+                        <th class="text-left">Model</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <t t-foreach="myvehicles" t-as="myvehicle">
                     <tr>
-                        <td class="text-center"><span t-field="myvehicle.brand_id.name"/></td>
-                        <td class="text-center"><span t-field="myvehicle.model_id.name"/></td>
-                        <td class="text-center"><span t-field="myvehicle.license_plate"/></td>
+                        <td class="text-left"><span t-field="myvehicle.brand_id.name"/></td>
+                        <td class="text-left"><span t-field="myvehicle.model_id.name"/></td>
+                        <td class="text-right">
+                            <a t-att-href="'/my/gogp/vehicle/%s' % (slug(myvehicle))" class="btn btn-primary">Edit</a>
+                        </td>
                     </tr>
                 </t>
             </t>
         </t>
     </template>
+
+
+    <template id="portal_my_gogp_vehicle_details" name="My goGP Vehicle Detail">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">My Vehicle Details</t>
+            </t>
+            <form t-att-action="'/my/gogp/vehicle/%s' % (slug(vehicles))" method="post">
+                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                <div class="row o_portal_details">
+                    <div class="col-lg-8">
+                        <div class="row">
+                            <div t-attf-class="form-group #{error.get('vehicle_brands') and 'o_has_error' or ''} col-xl-6">
+                                <label class="col-form-label" for="brand_id">Brand</label>
+                                <select name="brand_id" t-attf-class="form-control #{error.get('brand_id') and 'is-invalid' or ''}">
+                                    <option value="">Country...</option>
+                                    <t t-foreach="vehicle_brands or []" t-as="brand">
+                                        <option t-att-value="brand.id" t-att-selected="brand.id == int(brand_id) if brand_id else brand.id == vehicles.brand_id.id">
+                                            <t t-esc="brand.name" />
+                                        </option>
+                                    </t>
+                                </select>
+                            </div>
+                            <div t-attf-class="form-group #{error.get('vehicle_models') and 'o_has_error' or ''} col-xl-6">
+                                <label class="col-form-label" for="model_id">Model</label>
+                                <select name="model_id" t-attf-class="form-control #{error.get('model_id') and 'is-invalid' or ''}">
+                                    <option value="">Models...</option>
+                                    <t t-foreach="vehicle_models or []" t-as="model">
+                                        <option t-att-value="model.id" t-att-selected="model.id == int(model_id) if model_id else model.id == vehicles.model_id.id">
+                                            <t t-esc="model.name" />
+                                        </option>
+                                    </t>
+                                </select>
+                            </div>
+                            <div t-attf-class="form-group #{error.get('vehicle_models_type') and 'o_has_error' or ''} col-xl-6">
+                                <label class="col-form-label" for="fuel_type_id">Vehicle Type</label>
+                                <select name="vehicle_type_id" t-attf-class="form-control #{error.get('vehicle_type_id') and 'is-invalid' or ''}">
+                                    <option value="">Vehicle Type...</option>
+                                    <t t-foreach="vehicle_models_type or []" t-as="vehicle_type">
+                                        <option t-att-value="vehicle_type.id" t-att-selected="vehicle_type.id == int(vehicle_type_id) if vehicle_type_id else vehicle_type.id == vehicles.vehicle_type_id.id">
+                                            <t t-esc="vehicle_type.name" />
+                                        </option>
+                                    </t>
+                                </select>
+                            </div>
+                            <div t-attf-class="form-group #{error.get('vehicle_fuel_type') and 'o_has_error' or ''} col-xl-6">
+                                <label class="col-form-label" for="fuel_type_id">Fuel Type</label>
+                                <select name="fuel_type_id" t-attf-class="form-control #{error.get('fuel_type_id') and 'is-invalid' or ''}">
+                                    <option value="">Fuel Type...</option>
+                                    <t t-foreach="vehicle_fuel_type or []" t-as="fuel_type">
+                                        <option t-att-value="fuel_type.id" t-att-selected="fuel_type.id == int(fuel_type_id) if fuel_type_id else fuel_type.id == vehicles.fuel_type_id.id">
+                                            <t t-esc="fuel_type.name" />
+                                        </option>
+                                    </t>
+                                </select>
+                            </div>
+                            <div class="clearfix" />
+                            <div t-attf-class="form-group #{error.get('license_plate') and 'o_has_error' or ''} col-xl-6">
+                                <label class="col-form-label" for="street">License Plate</label>
+                                <input type="text" name="license_plate" t-attf-class="form-control #{error.get('license_plate') and 'is-invalid' or ''}" t-att-value="license_plate or vehicles.license_plate"/>
+                            </div>
+                            <div t-attf-class="form-group #{error.get('location') and 'o_has_error' or ''} col-xl-6">
+                                <label class="col-form-label" for="street">Location</label>
+                                <input type="text" name="location" t-attf-class="form-control #{error.get('location') and 'is-invalid' or ''}" t-att-value="location or vehicles.location"/>
+                            </div>
+                            <div t-attf-class="form-group #{error.get('color') and 'o_has_error' or ''} col-xl-6">
+                                <label class="col-form-label" for="street">Color</label>
+                                <input type="text" name="color" t-attf-class="form-control #{error.get('color') and 'is-invalid' or ''}" t-att-value="color or vehicles.color"/>
+                            </div>
+                            <div t-attf-class="form-group #{error.get('model_year') and 'o_has_error' or ''} col-xl-6">
+                                <label class="col-form-label" for="street">Model Year</label>
+                                <input type="text" name="model_year" t-attf-class="form-control #{error.get('model_year') and 'is-invalid' or ''}" t-att-value="model_year or vehicles.model_year"/>
+                            </div>
+                        </div>
+                        <div class="clearfix">
+                            <button type="submit" class="btn btn-primary float-right mb32 ">
+                                Confirm
+                                <span class="fa fa-long-arrow-right" />
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </t>
+    </template>
+
+
     <template id="portal_my_gogp_groups" name="My goGP Groups">
         <t t-call="portal.portal_layout">
             <t t-set="breadcrumbs_searchbar" t-value="True"/>
@@ -179,16 +330,16 @@
             <t t-if="mygroups" t-call="portal.portal_table">
                 <thead>
                     <tr class="active">
-                        <th class="text-center">Name</th>
-                        <th class="text-center">Type</th>
-                        <th class="text-center">Description</th>
+                        <th class="text-left">Name</th>
+                        <th class="text-left">Type</th>
+                        <th class="text-left">Description</th>
                     </tr>
                 </thead>
                 <t t-foreach="mygroups" t-as="mygroup">
                     <tr>
-                        <td class="text-center"><span t-field="mygroup.name"/></td>
-                        <td class="text-center"><span t-field="mygroup.type.name"/></td>
-                        <td class="text-center"><span t-field="mygroup.description"/></td>
+                        <td class="text-left"><span t-field="mygroup.name"/></td>
+                        <td class="text-left"><span t-field="mygroup.type.name"/></td>
+                        <td class="text-left"><span t-field="mygroup.description"/></td>
                     </tr>
                 </t>
             </t>

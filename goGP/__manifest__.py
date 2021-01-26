@@ -39,6 +39,8 @@ Description
             "views/nomination_view.xml",
             "views/my_profile_view.xml",
             "views/res_partner_view.xml",
+            "views/partner_sex_type_view.xml",
+            "views/partner_shirt_type_view.xml",
             "views/event_view.xml",
             "views/portal_views.xml",
             "views/menu.xml",

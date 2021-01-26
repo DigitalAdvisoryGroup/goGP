@@ -100,6 +100,18 @@
             action="action_vehicles_fuel_type"
             sequence="30"/>
 
+        <menuitem id="gogp_sex_type_menu"
+            name="Sex Type"
+            parent="gogp_config_menu"
+            action="action_partner_sex_type"
+            sequence="40"/>
+
+        <menuitem id="gogp_shirt_type_menu"
+            name="Shirt Size"
+            parent="gogp_config_menu"
+            action="action_partner_shirt_type"
+            sequence="50"/>
+
 
 
 

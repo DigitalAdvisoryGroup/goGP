@@ -8,7 +8,6 @@ from odoo.exceptions import UserError
 
 class MyEvent(models.Model):
     _name = 'gogp.my.event'
-    _rec_name = "event_id"
     _description = 'goGP participants view'
 
     name = fields.Char("myEvent name")
