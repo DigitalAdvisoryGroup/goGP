@@ -11,18 +11,34 @@ import werkzeug
 
 class goGPPortal(CustomerPortal):
 
-    OPTIONAL_BILLING_FIELDS = ["zipcode", "state_id", "vat", "company_name","image_1920","partner_sex_id","birthdate","acc_number","partner_shirt_size_id"]
+    OPTIONAL_BILLING_FIELDS = ["zipcode", "state_id", "vat", "company_name","partner_sex_id","birthdate","acc_number","partner_shirt_size_id"]
 
     @http.route()
     def account(self, redirect=None, **post):
         values = self._prepare_portal_layout_values()
         partner = request.env.user.partner_id
+        PartnerBank = request.env['res.partner.bank'].sudo()
+        parnter_bank_ids = PartnerBank.search([('partner_id', '=', partner.id)], limit=1)
         values.update({
             'error': {},
             'error_message': [],
         })
 
         if post and request.httprequest.method == 'POST':
+            if 'image_1920' in post:
+                image_1920 = post.get('image_1920')
+                if image_1920:
+                    image_1920 = image_1920.read()
+                    image_1920 = base64.b64encode(image_1920)
+                    partner.sudo().write({
+                        'image_1920': image_1920
+                    })
+                post.pop('image_1920')
+            if 'clear_avatar' in post:
+                partner.sudo().write({
+                    'image_1920': False
+                })
+                post.pop('clear_avatar')
             error, error_message = self.details_form_validate(post)
             values.update({'error': error, 'error_message': error_message})
             values.update(post)
@@ -35,8 +51,16 @@ class goGPPortal(CustomerPortal):
                     except:
                         values[field] = False
                 values.update({'zip': values.pop('zipcode', '')})
+                if values.get("acc_number"):
+                    if parnter_bank_ids:
+                        parnter_bank_ids.write({'acc_number':values.get("acc_number")})
+                    else:
+                        partner_bank_vals = {
+                            "partner_id": partner.id,
+                            "acc_number": values.get("acc_number")
+                        }
+                        request.env['res.partner.bank'].sudo().create(partner_bank_vals)
                 values.pop('acc_number')
-                print("-------values----------",values)
                 partner.sudo().write(values)
                 if redirect:
                     return request.redirect(redirect)
@@ -53,6 +77,7 @@ class goGPPortal(CustomerPortal):
             'sextypes': sextypes,
             'shirtsizes': shirtsizes,
             'states': states,
+            'acc_number': parnter_bank_ids and parnter_bank_ids.acc_number or '',
             'has_check_vat': hasattr(request.env['res.partner'], 'check_vat'),
             'redirect': redirect,
             'page_name': 'my_details',
@@ -61,22 +86,6 @@ class goGPPortal(CustomerPortal):
         response = request.render("portal.portal_my_details", values)
         response.headers['X-Frame-Options'] = 'DENY'
         return response
-    # def account(self, redirect=None, **post):
-    #     if 'image_1920' in post:
-    #         image_1920 = post.get('image_1920')
-    #         if image_1920:
-    #             image_1920 = image_1920.read()
-    #             image_1920 = base64.b64encode(image_1920)
-    #             request.env.user.partner_id.sudo().write({
-    #                 'image_1920': image_1920
-    #             })
-    #         post.pop('image_1920')
-    #     if 'clear_avatar' in post:
-    #         request.env.user.partner_id.sudo().write({
-    #             'image_1920': False
-    #         })
-    #         post.pop('clear_avatar')
-    #     return super(goGPPortal, self).account(redirect=redirect, **post)
 
     def _prepare_home_portal_values(self, counters):
         values = super()._prepare_home_portal_values(counters)
@@ -124,7 +133,6 @@ class goGPPortal(CustomerPortal):
         )
         # search the count to display, according to the pager data
         myevents = goGPmyevent.search(domain, limit=self._items_per_page, offset=pager['offset'])
-        print("----myevents---------",myevents)
         request.session['my_gogpevent_history'] = myevents.ids[:100]
 
         values.update({
@@ -140,23 +148,17 @@ class goGPPortal(CustomerPortal):
 
     @http.route(['/my/gogp/event/<model("gogp.my.event"):myevent>'], type='http', auth="user", website=True)
     def portal_my_gogp_event_detail(self, myevent=None, **kw):
-        print("------myevent--------------",myevent)
-        print("------kw--------------",kw)
         if kw and kw.get("vehicle_id"):
             myevent.sudo().vehicle_id = int(kw['vehicle_id'])
             return request.redirect('/my/gogp/events')
         values = self._prepare_portal_layout_values()
         partner = request.env.user.partner_id
-        print("-------partner----------",partner.name)
-        print("-------myevent.attendee_id----------",myevent.attendee_id.name)
         values.update({
             'error': {},
             'error_message': [],
         })
         if myevent:
             my_vehicles = request.env['gogp.vehicles'].sudo().search([('driver_id','=',partner.id)])
-            # my_vehicles = request.env['gogp.vehicles'].sudo().search([])
-            print("--------my_vehicles-----------",my_vehicles)
             values.update({
                 'vehicles': my_vehicles,
                 'myevent': myevent.sudo(),
@@ -195,7 +197,6 @@ class goGPPortal(CustomerPortal):
         )
         # search the count to display, according to the pager data
         myvehicles = goGPmyvehicle.search(domain, limit=self._items_per_page, offset=pager['offset'])
-        print("----myvehicles---------", myvehicles)
         request.session['my_gogpvehicle_history'] = myvehicles.ids[:100]
 
         values.update({
@@ -211,9 +212,11 @@ class goGPPortal(CustomerPortal):
 
     @http.route(['/my/gogp/vehicle/<model("gogp.vehicles"):myvehicle>'], type='http', auth="user", website=True)
     def portal_my_gogp_vehicle_detail(self, myvehicle=None, **kw):
-        print("------myevent--------------", myvehicle)
-        print("------kw--------------", kw)
         if kw:
+            image_128 = kw.get("image_128") and base64.b64encode(kw.get("image_128").read()) or ''
+            kw.update({'image_128': image_128})
+            if 'clear_avatar' in kw:
+                kw.pop("clear_avatar")
             myvehicle.sudo().write(kw)
             return request.redirect('/my/gogp/vehicles')
         values = self._prepare_portal_layout_values()
@@ -235,6 +238,31 @@ class goGPPortal(CustomerPortal):
                 'page_name': 'my_vehicle_detail',
             })
         return request.render("goGP.portal_my_gogp_vehicle_details", values)
+
+    @http.route(['/my/gogp/vehicle/add'], type='http', auth="user", website=True)
+    def portal_my_gogp_vehicle_add(self, **kw):
+        if kw:
+            image_128 = kw.get("image_128") and base64.b64encode(kw.get("image_128").read()) or ''
+            kw.update({'driver_id': request.env.user.partner_id.id,'image_128':image_128})
+            request.env['gogp.vehicles'].sudo().create(kw)
+            return request.redirect('/my/gogp/vehicles')
+        values = self._prepare_portal_layout_values()
+        values.update({
+            'error': {},
+            'error_message': [],
+        })
+        vehicle_fuel_type = request.env['gogp.vehicles.fuel.type'].sudo().search([])
+        vehicle_brands = request.env['gogp.vehicles.brands'].sudo().search([])
+        vehicle_models = request.env['gogp.vehicles.models'].sudo().search([])
+        vehicle_models_type = request.env['gogp.vehicles.models.type'].sudo().search([])
+        values.update({
+            'vehicle_fuel_type': vehicle_fuel_type,
+            'vehicle_brands': vehicle_brands,
+            'vehicle_models': vehicle_models,
+            'vehicle_models_type': vehicle_models_type,
+            'page_name': 'my_vehicle_detail',
+        })
+        return request.render("goGP.portal_my_gogp_vehicle_details_add", values)
 
     @http.route(['/my/gogp/groups', '/my/gogp/groups/page/<int:page>'], type='http', auth="user", website=True)
     def portal_my_gogp_groups(self, page=1, date_begin=None, date_end=None, sortby=None, **kw):
@@ -267,7 +295,6 @@ class goGPPortal(CustomerPortal):
         )
         # search the count to display, according to the pager data
         mygroups = goGPmygroups.search(domain, limit=self._items_per_page, offset=pager['offset'])
-        print("----mygroups---------", mygroups)
         request.session['my_gogpgroups_history'] = mygroups.ids[:100]
 
         values.update({
@@ -307,8 +334,13 @@ class CustomWebsiteEventController(WebsiteEventController):
     def registration_new(self, event, **post):
         if not event.can_access_from_current_website():
             raise werkzeug.exceptions.NotFound()
-
         tickets = self._process_tickets_form(event, post)
+        ticket_ids = request.env['event.event.ticket'].sudo()
+        for ticket in tickets:
+            if ticket.get("ticket").is_exclusive:
+                ticket_ids |= ticket.get("ticket")
+        if len(ticket_ids) > 1:
+            return request.env['ir.ui.view']._render_template("goGP.event_registation_validate",{'error': (_("You can not select more than one exclusive ticket"))})
         availability_check = True
         if event.seats_limited:
             ordered_seats = 0

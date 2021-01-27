@@ -13,8 +13,8 @@
         </xpath>
         <xpath expr="//div[hasclass('clearfix')]" position="after">
             <div t-attf-class="form-group #{error.get('birthdate') and 'o_has_error' or ''} col-xl-6">
-                <label class="col-form-label" for="name">Birthdate</label>
-                <input type="date" min="1900-01-01" name="birthdate" t-att-value="birthdate or partner.birthdate" class="form-control datetimepicker-input" data-date-format="DD-MM-YYYY" placeholder="DD-MM-YYYY"/>
+                <label class="col-form-label" for="birthdate">Birthdate</label>
+                <input type="date" min="1900-01-01" name="birthdate" t-att-value="birthdate or partner.birthdate" t-attf-class="form-control datetimepicker-input #{error.get('birthdate') and 'is-invalid' or ''}" data-date-format="DD-MM-YYYY" placeholder="DD-MM-YYYY"/>
             </div>
             <div t-attf-class="form-group #{error.get('partner_sex_id') and 'o_has_error' or ''} col-xl-6">
                 <label class="col-form-label" for="partner_sex_id">Sex</label>
