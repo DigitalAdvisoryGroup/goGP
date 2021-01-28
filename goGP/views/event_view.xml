@@ -556,6 +556,7 @@
                         <th class="text-left">Name</th>
                         <th class="text-left">Type</th>
                         <th class="text-left">Description</th>
+                        <th class="text-left">Image</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -569,6 +570,9 @@
                         </td>
                         <td class="text-left">
                             <span t-field="mygroup.description"/>
+                        </td>
+                        <td class="text-left">
+                            <img alt="Avatar" t-attf-src="/web/image/gogp.social_groups/#{mygroup.id}/image_128/50x50"/>
                         </td>
                         <td class="text-right">
                             <a t-att-href="'/my/gogp/group/%s' % (slug(mygroup))" class="btn btn-primary">Edit</a>
@@ -588,6 +592,18 @@
             </t>
             <!--<form t-att-action="'/my/gogp/group/%s' % (slug(mygroup))" method="post" enctype="multipart/form-data">-->
                 <div class="row o_portal_details">
+                    <div class="col-lg-12" id="gogp_portal_avatar">
+                        <input type="file" class="d-none gogp_portal_avatar_upload" name="image_128"/>
+                        <img class="mb-3 gogp_portal_avatar_img" t-att-src="website.image_url(mygroup, 'image_128')" style="object-fit: cover; border-radius: 50%; width: 128px; height: 128px;"/>
+                        <!--<div class="text-left">
+                            <a href="#" class="btn btn-primary gogp_portal_avatar_edit" aria-label="Edit">
+                                <i class="fa fa-pencil fa-1g float-sm-none float-md-left" title="Edit"/>
+                            </a>
+                            <a href="#" title="Clear" aria-label="Clear" class="btn border-primary gogp_portal_avatar_clear">
+                                <i class="fa fa-trash-o float-sm-none float-md-right"/>
+                            </a>
+                        </div>-->
+                    </div>
                     <div class="col-lg-8">
                         <div class="row">
                             <div t-attf-class="form-group #{error.get('name') and 'o_has_error' or ''} col-xl-6">
