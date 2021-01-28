@@ -48,3 +48,14 @@ class EventTicket(models.Model):
                 ticket.is_user_registered = False
                 ticket.is_user_registered_no = 0
 
+
+class EventRegistration(models.Model):
+    _inherit = 'event.registration'
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            if vals.get('email'):
+                vals['email'] = vals['email'].lower()
+        return super(EventRegistration, self).create(vals_list)
+

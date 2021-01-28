@@ -350,10 +350,29 @@ class CustomWebsiteEventController(WebsiteEventController):
 
     def _create_attendees_from_registration_post(self, event, registration_data):
         resp = super(CustomWebsiteEventController, self)._create_attendees_from_registration_post(event,registration_data)
-        # print("--------resp------------------",resp)
+        for registration_values in registration_data:
+            reg_email = registration_values['email'].lower()
+            another_partner_id = request.env['res.partner'].sudo().search([('email', '=', reg_email)])
+            if another_partner_id:
+                portal_user_id = request.env['res.users'].sudo().search([('partner_id', '=', another_partner_id.id)])
+                if not portal_user_id:
+                    request.env['res.users'].sudo().create({
+                        'company_id': request.env.company.id,
+                        'partner_id': another_partner_id.id,
+                        'name': registration_values['name'],
+                        'login': reg_email,
+                        'email': reg_email,
+                        'groups_id': [(6, 0, [request.env.ref('base.group_portal').id])]
+                    })
+            if not another_partner_id:
+                request.env['res.users'].sudo().create({
+                    'company_id': request.env.company.id,
+                    'name': registration_values['name'],
+                    'login': registration_values['email'].lower(),
+                    'email': registration_values['email'].lower(),
+                    'groups_id': [(6, 0, [request.env.ref('base.group_portal').id])]
+                })
         for res in resp:
-            # print("--------res-----------",res)
-            # print("--------res.partner_id-----------",res.partner_id)
             gogp_myevent_vals = {
                 'name': res.event_id.name,
                 "attendee_id": res.partner_id.id,

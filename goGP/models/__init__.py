@@ -10,3 +10,4 @@ from . import social_groups
 from . import res_partner
 from . import event
 from . import product
+from . import res_users
