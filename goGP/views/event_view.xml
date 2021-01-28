@@ -385,17 +385,39 @@
                                     </t>
                                 </select>
                             </div>
+                            <div t-attf-class="form-group #{error.get('name') and 'o_has_error' or ''} col-xl-12">
+                                <label class="col-form-label" for="name">Nickname</label>
+                                <input type="text" name="name" t-attf-class="form-control #{error.get('name') and 'is-invalid' or ''}"
+                                       t-att-value="name or vehicles.name"/>
+                            </div>
+                            <div t-attf-class="form-group #{error.get('description') and 'o_has_error' or ''} col-xl-12">
+                                <label class="col-form-label" for="description">Description</label>
+                                <input type="text" name="description" t-attf-class="form-control #{error.get('description') and 'is-invalid' or ''}" t-att-value="description or vehicles.description"/>
+                            </div>
                             <div t-attf-class="form-group #{error.get('vehicle_models_type') and 'o_has_error' or ''} col-xl-6">
-                                <label class="col-form-label" for="fuel_type_id">Vehicle Type</label>
+                                <label class="col-form-label" for="vehicle_type_id">Vehicle Type</label>
                                 <select name="vehicle_type_id" t-attf-class="form-control #{error.get('vehicle_type_id') and 'is-invalid' or ''}">
                                     <option value="">Vehicle Type...</option>
-                                    <t t-foreach="vehicle_models_type or []" t-as="vehicle_type">
-                                        <option t-att-value="vehicle_type.id"
-                                                t-att-selected="vehicle_type.id == int(vehicle_type_id) if vehicle_type_id else vehicle_type.id == vehicles.vehicle_type_id.id">
-                                            <t t-esc="vehicle_type.name"/>
+                                    <t t-foreach="vehicle_models_type or []" t-as="vt">
+                                        <option t-att-value="vt.id"
+                                                t-att-selected="vt.id == int(vehicle_type_id) if vehicle_type_id else vt.id == vehicles.vehicle_type_id.id">
+                                            <t t-esc="vt.name"/>
                                         </option>
                                     </t>
                                 </select>
+                            </div>
+                            <div t-attf-class="form-group #{error.get('model_year') and 'o_has_error' or ''} col-xl-6">
+                                <label class="col-form-label" for="model_year">Model Year</label>
+                                <input type="text" name="model_year" t-attf-class="form-control #{error.get('model_year') and 'is-invalid' or ''}" t-att-value="model_year or vehicles.model_year"/>
+                            </div>
+                            <div t-attf-class="form-group #{error.get('license_plate') and 'o_has_error' or ''} col-xl-6">
+                                <label class="col-form-label" for="license_plate">License Plate</label>
+                                <input type="text" name="license_plate" t-attf-class="form-control #{error.get('license_plate') and 'is-invalid' or ''}"
+                                       t-att-value="license_plate or vehicles.license_plate"/>
+                            </div>
+                            <div t-attf-class="form-group #{error.get('odometer') and 'o_has_error' or ''} col-xl-6">
+                                <label class="col-form-label" for="odometer">Odometer (km)</label>
+                                <input type="text" name="odometer" t-attf-class="form-control #{error.get('odometer') and 'is-invalid' or ''}" t-att-value="odometer or vehicles.odometer"/>
                             </div>
                             <div t-attf-class="form-group #{error.get('vehicle_fuel_type') and 'o_has_error' or ''} col-xl-6">
                                 <label class="col-form-label" for="fuel_type_id">Fuel Type</label>
@@ -408,24 +430,76 @@
                                     </t>
                                 </select>
                             </div>
-                            <div class="clearfix"/>
-                            <div t-attf-class="form-group #{error.get('license_plate') and 'o_has_error' or ''} col-xl-6">
-                                <label class="col-form-label" for="street">License Plate</label>
-                                <input type="text" name="license_plate" t-attf-class="form-control #{error.get('license_plate') and 'is-invalid' or ''}"
-                                       t-att-value="license_plate or vehicles.license_plate"/>
+                            <div t-attf-class="form-group #{error.get('vin_sn') and 'o_has_error' or ''} col-xl-6">
+                                <label class="col-form-label" for="vin_sn">Chassis Number</label>
+                                <input type="text" name="vin_sn" t-attf-class="form-control #{error.get('vin_sn') and 'is-invalid' or ''}" t-att-value="vin_sn or vehicles.vin_sn"/>
                             </div>
-                            <div t-attf-class="form-group #{error.get('location') and 'o_has_error' or ''} col-xl-6">
-                                <label class="col-form-label" for="street">Location</label>
+                            <div class="clearfix"/>
+                            <div t-attf-class="form-group #{error.get('modifications') and 'o_has_error' or ''} col-xl-12">
+                                <label class="col-form-label" for="modifications">Vehicle Modifications</label>
+                                <input type="text" name="modifications" t-attf-class="form-control #{error.get('modifications') and 'is-invalid' or ''}" t-att-value="modifications or vehicles.modifications"/>
+                            </div>
+                            <div t-attf-class="form-group #{error.get('cm3') and 'o_has_error' or ''} col-xl-6">
+                                <label class="col-form-label" for="cm3">Cubic centimetres</label>
+                                <input type="text" name="cm3" t-attf-class="form-control #{error.get('cm3') and 'is-invalid' or ''}" t-att-value="cm3 or vehicles.cm3"/>
+                            </div>
+                            <div t-attf-class="form-group #{error.get('cylinders') and 'o_has_error' or ''} col-xl-6">
+                                <label class="col-form-label" for="cylinders">Cylinders</label>
+                                <input type="text" name="cylinders" t-attf-class="form-control #{error.get('cylinders') and 'is-invalid' or ''}" t-att-value="cylinders or vehicles.cylinders"/>
+                            </div>
+                            <div t-attf-class="form-group #{error.get('horsepower') and 'o_has_error' or ''} col-xl-6">
+                                <label class="col-form-label" for="horsepower">Horsepower</label>
+                                <input type="text" name="horsepower" t-attf-class="form-control #{error.get('horsepower') and 'is-invalid' or ''}" t-att-value="horsepower or vehicles.horsepower"/>
+                            </div>
+                            <div t-attf-class="form-group #{error.get('power') and 'o_has_error' or ''} col-xl-6">
+                                <label class="col-form-label" for="power">Power</label>
+                                <input type="text" name="power" t-attf-class="form-control #{error.get('power') and 'is-invalid' or ''}" t-att-value="power or vehicles.power"/>
+                            </div>
+                            <div t-attf-class="form-group #{error.get('fia_homologation') and 'o_has_error' or ''} col-xl-6">
+                                <label class="col-form-label" for="fia_homologation">FIA Homologation:</label>
+                                <input type="text" name="fia_homologation" t-attf-class="form-control #{error.get('fia_homologation') and 'is-invalid' or ''}" t-att-value="fia_homologation or vehicles.fia_homologation"/>
+                            </div>
+                            <div t-attf-class="form-group #{error.get('fia_doc') and 'o_has_error' or ''} col-xl-6">
+                                <label class="col-form-label" for="fia_doc">FIA Document</label>
+                                <input type="text" name="fia_doc" t-attf-class="form-control #{error.get('fia_doc') and 'is-invalid' or ''}" t-att-value="fia_doc or vehicles.fia_doc"/>
+                            </div>
+                            <div t-attf-class="form-group #{error.get('fia_periode') and 'o_has_error' or ''} col-xl-6">
+                                <label class="col-form-label" for="fia_periode">FIA Period</label>
+                                <input type="text" name="fia_periode" t-attf-class="form-control #{error.get('fia_periode') and 'is-invalid' or ''}" t-att-value="fia_periode or vehicles.fia_periode"/>
+                            </div>
+
+
+
+
+                            <!--<div t-attf-class="form-group #{error.get('location') and 'o_has_error' or ''} col-xl-6">
+                                <label class="col-form-label" for="location">Location</label>
                                 <input type="text" name="location" t-attf-class="form-control #{error.get('location') and 'is-invalid' or ''}" t-att-value="location or vehicles.location"/>
                             </div>
                             <div t-attf-class="form-group #{error.get('color') and 'o_has_error' or ''} col-xl-6">
-                                <label class="col-form-label" for="street">Color</label>
+                                <label class="col-form-label" for="color">Color</label>
                                 <input type="text" name="color" t-attf-class="form-control #{error.get('color') and 'is-invalid' or ''}" t-att-value="color or vehicles.color"/>
                             </div>
-                            <div t-attf-class="form-group #{error.get('model_year') and 'o_has_error' or ''} col-xl-6">
-                                <label class="col-form-label" for="street">Model Year</label>
-                                <input type="text" name="model_year" t-attf-class="form-control #{error.get('model_year') and 'is-invalid' or ''}" t-att-value="model_year or vehicles.model_year"/>
+                            <div t-attf-class="form-group #{error.get('odometer_unit') and 'o_has_error' or ''} col-xl-6">
+                                <label class="col-form-label" for="odometer_unit">Odometer Unit</label>
+                                <input type="text" name="odometer_unit" t-attf-class="form-control #{error.get('odometer_unit') and 'is-invalid' or ''}" t-att-value="odometer_unit or vehicles.odometer_unit"/>
                             </div>
+                            <div t-attf-class="form-group #{error.get('acquisition_date') and 'o_has_error' or ''} col-xl-6">
+                                <label class="col-form-label" for="acquisition_date">Immatriculation Date</label>
+                                <input type="date" min="1900-01-01" name="acquisition_date" t-att-value="acquisition_date or vehicles.acquisition_date" t-attf-class="form-control datetimepicker-input #{error.get('acquisition_date') and 'is-invalid' or ''}" data-date-format="DD-MM-YYYY" placeholder="DD-MM-YYYY"/>
+                            </div>
+                            <div t-attf-class="form-group #{error.get('seats') and 'o_has_error' or ''} col-xl-6">
+                                <label class="col-form-label" for="seats">Seats Number</label>
+                                <input type="text" name="seats" t-attf-class="form-control #{error.get('seats') and 'is-invalid' or ''}" t-att-value="seats or vehicles.seats"/>
+                            </div>
+                            <div t-attf-class="form-group #{error.get('doors') and 'o_has_error' or ''} col-xl-6">
+                                <label class="col-form-label" for="doors">Doors Number</label>
+                                <input type="text" name="doors" t-attf-class="form-control #{error.get('doors') and 'is-invalid' or ''}" t-att-value="doors or vehicles.doors"/>
+                            </div>
+                            <div t-attf-class="form-group #{error.get('co2') and 'o_has_error' or ''} col-xl-6">
+                                <label class="col-form-label" for="co2">CO2 Emissions</label>
+                                <input type="text" name="co2" t-attf-class="form-control #{error.get('co2') and 'is-invalid' or ''}" t-att-value="co2 or vehicles.co2"/>
+                            </div>-->
+
                         </div>
                         <div class="clearfix">
                             <button type="submit" class="btn btn-primary float-right mb32 ">
@@ -480,50 +554,92 @@
                                 <select name="model_id" t-attf-class="form-control #{error.get('model_id') and 'is-invalid' or ''}">
                                     <option value="">Models...</option>
                                     <t t-foreach="vehicle_models or []" t-as="model">
-                                        <option t-att-value="model.id">
+                                        <option t-att-value="model.id" >
                                             <t t-esc="model.name"/>
                                         </option>
                                     </t>
                                 </select>
                             </div>
+                            <div t-attf-class="form-group #{error.get('name') and 'o_has_error' or ''} col-xl-12">
+                                <label class="col-form-label" for="name">Nickname</label>
+                                <input type="text" name="name" t-attf-class="form-control #{error.get('name') and 'is-invalid' or ''}"
+                                       />
+                            </div>
+                            <div t-attf-class="form-group #{error.get('description') and 'o_has_error' or ''} col-xl-12">
+                                <label class="col-form-label" for="description">Description</label>
+                                <input type="text" name="description" t-attf-class="form-control #{error.get('description') and 'is-invalid' or ''}" />
+                            </div>
                             <div t-attf-class="form-group #{error.get('vehicle_models_type') and 'o_has_error' or ''} col-xl-6">
-                                <label class="col-form-label" for="fuel_type_id">Vehicle Type</label>
+                                <label class="col-form-label" for="vehicle_type_id">Vehicle Type</label>
                                 <select name="vehicle_type_id" t-attf-class="form-control #{error.get('vehicle_type_id') and 'is-invalid' or ''}">
                                     <option value="">Vehicle Type...</option>
-                                    <t t-foreach="vehicle_models_type or []" t-as="vehicle_type">
-                                        <option t-att-value="vehicle_type.id">
-                                            <t t-esc="vehicle_type.name"/>
+                                    <t t-foreach="vehicle_models_type or []" t-as="vt">
+                                        <option t-att-value="vt.id">
+                                            <t t-esc="vt.name"/>
                                         </option>
                                     </t>
                                 </select>
+                            </div>
+                            <div t-attf-class="form-group #{error.get('model_year') and 'o_has_error' or ''} col-xl-6">
+                                <label class="col-form-label" for="model_year">Model Year</label>
+                                <input type="text" name="model_year" t-attf-class="form-control #{error.get('model_year') and 'is-invalid' or ''}" />
+                            </div>
+                            <div t-attf-class="form-group #{error.get('license_plate') and 'o_has_error' or ''} col-xl-6">
+                                <label class="col-form-label" for="license_plate">License Plate</label>
+                                <input type="text" name="license_plate" t-attf-class="form-control #{error.get('license_plate') and 'is-invalid' or ''}"
+                                       />
+                            </div>
+                            <div t-attf-class="form-group #{error.get('odometer') and 'o_has_error' or ''} col-xl-6">
+                                <label class="col-form-label" for="odometer">Odometer (km)</label>
+                                <input type="text" name="odometer" t-attf-class="form-control #{error.get('odometer') and 'is-invalid' or ''}" />
                             </div>
                             <div t-attf-class="form-group #{error.get('vehicle_fuel_type') and 'o_has_error' or ''} col-xl-6">
                                 <label class="col-form-label" for="fuel_type_id">Fuel Type</label>
                                 <select name="fuel_type_id" t-attf-class="form-control #{error.get('fuel_type_id') and 'is-invalid' or ''}">
                                     <option value="">Fuel Type...</option>
                                     <t t-foreach="vehicle_fuel_type or []" t-as="fuel_type">
-                                        <option t-att-value="fuel_type.id">
+                                        <option t-att-value="fuel_type.id" >
                                             <t t-esc="fuel_type.name"/>
                                         </option>
                                     </t>
                                 </select>
                             </div>
+                            <div t-attf-class="form-group #{error.get('vin_sn') and 'o_has_error' or ''} col-xl-6">
+                                <label class="col-form-label" for="vin_sn">Chassis Number</label>
+                                <input type="text" name="vin_sn" t-attf-class="form-control #{error.get('vin_sn') and 'is-invalid' or ''}" />
+                            </div>
                             <div class="clearfix"/>
-                            <div t-attf-class="form-group #{error.get('license_plate') and 'o_has_error' or ''} col-xl-6">
-                                <label class="col-form-label" for="street">License Plate</label>
-                                <input type="text" name="license_plate" t-attf-class="form-control #{error.get('license_plate') and 'is-invalid' or ''}"/>
+                            <div t-attf-class="form-group #{error.get('modifications') and 'o_has_error' or ''} col-xl-12">
+                                <label class="col-form-label" for="modifications">Vehicle Modifications</label>
+                                <input type="text" name="modifications" t-attf-class="form-control #{error.get('modifications') and 'is-invalid' or ''}" />
                             </div>
-                            <div t-attf-class="form-group #{error.get('location') and 'o_has_error' or ''} col-xl-6">
-                                <label class="col-form-label" for="street">Location</label>
-                                <input type="text" name="location" t-attf-class="form-control #{error.get('location') and 'is-invalid' or ''}"/>
+                            <div t-attf-class="form-group #{error.get('cm3') and 'o_has_error' or ''} col-xl-6">
+                                <label class="col-form-label" for="cm3">Cubic centimetres</label>
+                                <input type="text" name="cm3" t-attf-class="form-control #{error.get('cm3') and 'is-invalid' or ''}" />
                             </div>
-                            <div t-attf-class="form-group #{error.get('color') and 'o_has_error' or ''} col-xl-6">
-                                <label class="col-form-label" for="street">Color</label>
-                                <input type="text" name="color" t-attf-class="form-control #{error.get('color') and 'is-invalid' or ''}"/>
+                            <div t-attf-class="form-group #{error.get('cylinders') and 'o_has_error' or ''} col-xl-6">
+                                <label class="col-form-label" for="cylinders">Cylinders</label>
+                                <input type="text" name="cylinders" t-attf-class="form-control #{error.get('cylinders') and 'is-invalid' or ''}" />
                             </div>
-                            <div t-attf-class="form-group #{error.get('model_year') and 'o_has_error' or ''} col-xl-6">
-                                <label class="col-form-label" for="street">Model Year</label>
-                                <input type="text" name="model_year" t-attf-class="form-control #{error.get('model_year') and 'is-invalid' or ''}"/>
+                            <div t-attf-class="form-group #{error.get('horsepower') and 'o_has_error' or ''} col-xl-6">
+                                <label class="col-form-label" for="horsepower">Horsepower</label>
+                                <input type="text" name="horsepower" t-attf-class="form-control #{error.get('horsepower') and 'is-invalid' or ''}" />
+                            </div>
+                            <div t-attf-class="form-group #{error.get('power') and 'o_has_error' or ''} col-xl-6">
+                                <label class="col-form-label" for="power">Power</label>
+                                <input type="text" name="power" t-attf-class="form-control #{error.get('power') and 'is-invalid' or ''}" />
+                            </div>
+                            <div t-attf-class="form-group #{error.get('fia_homologation') and 'o_has_error' or ''} col-xl-6">
+                                <label class="col-form-label" for="fia_homologation">FIA Homologation:</label>
+                                <input type="text" name="fia_homologation" t-attf-class="form-control #{error.get('fia_homologation') and 'is-invalid' or ''}" />
+                            </div>
+                            <div t-attf-class="form-group #{error.get('fia_doc') and 'o_has_error' or ''} col-xl-6">
+                                <label class="col-form-label" for="fia_doc">FIA Document</label>
+                                <input type="text" name="fia_doc" t-attf-class="form-control #{error.get('fia_doc') and 'is-invalid' or ''}" />
+                            </div>
+                            <div t-attf-class="form-group #{error.get('fia_periode') and 'o_has_error' or ''} col-xl-6">
+                                <label class="col-form-label" for="fia_periode">FIA Period</label>
+                                <input type="text" name="fia_periode" t-attf-class="form-control #{error.get('fia_periode') and 'is-invalid' or ''}" />
                             </div>
                         </div>
                         <div class="clearfix">

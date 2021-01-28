@@ -215,10 +215,15 @@ class goGPPortal(CustomerPortal):
     @http.route(['/my/gogp/vehicle/<model("gogp.vehicles"):myvehicle>'], type='http', auth="user", website=True)
     def portal_my_gogp_vehicle_detail(self, myvehicle=None, **kw):
         if kw:
-            image_128 = kw.get("image_128") and base64.b64encode(kw.get("image_128").read()) or ''
-            kw.update({'image_128': image_128})
+            if kw.get("image_128"):
+                image_128 = base64.b64encode(kw.get("image_128").read())
+                if image_128:
+                    kw.update({'image_128': image_128})
+            else:
+                kw.pop("image_128")
             if 'clear_avatar' in kw:
                 kw.pop("clear_avatar")
+                kw.update({'image_128': False})
             myvehicle.sudo().write(kw)
             return request.redirect('/my/gogp/vehicles')
         values = self._prepare_portal_layout_values()
@@ -244,6 +249,7 @@ class goGPPortal(CustomerPortal):
     @http.route(['/my/gogp/vehicle/add'], type='http', auth="user", website=True)
     def portal_my_gogp_vehicle_add(self, **kw):
         if kw:
+            print("--------kw---------------",kw)
             image_128 = kw.get("image_128") and base64.b64encode(kw.get("image_128").read()) or ''
             kw.update({'driver_id': request.env.user.partner_id.id,'image_128':image_128})
             request.env['gogp.vehicles'].sudo().create(kw)
