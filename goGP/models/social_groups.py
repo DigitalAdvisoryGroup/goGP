@@ -18,7 +18,7 @@ class SocialGroups(models.Model):
     _description = 'goGP social groups'
 
     name = fields.Char("Social group name", translate=True)
-    type = fields.Many2one("gogp.social_groups.type", string="Type", required=True)
+    type_id = fields.Many2one("gogp.social_groups.type", string="Type", required=True, oldname="type")
     is_public_group = fields.Boolean("Is Public Group", default=False)
     description = fields.Text("Description")
     partner_ids = fields.Many2many('res.partner', 'social_group_partner_rel', 'social_group_id', 'partner_id', string="Partner")

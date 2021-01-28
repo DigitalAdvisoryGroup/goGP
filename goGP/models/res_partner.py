@@ -7,12 +7,14 @@ from odoo.exceptions import UserError
 
 class PartnerSex(models.Model):
     _name = "partner.sex.type"
+    _description = "Sex Type"
 
     name = fields.Char("Name", translate=True)
 
 
 class PartnerShirtSize(models.Model):
     _name = "partner.shirt.size"
+    _description = "Shirt Size"
 
     name = fields.Char("Name", translate=True)
 

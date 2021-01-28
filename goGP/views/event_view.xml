@@ -24,7 +24,8 @@
             </field>
             <field name="product_id" position="after">
                 <field name="is_exclusive"/>
-                <field name="is_registered"/>
+                <field name="is_registered" invisible="1"/>
+                <field name="is_user_registered" invisible="1"/>
             </field>
         </field>
     </record>
@@ -74,7 +75,9 @@
                     <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
                     <div class="modal-content">
                         <div class="modal-body bg-light border-bottom">
-                            <strong><t t-esc="error"/></strong>
+                            <strong>
+                                <t t-esc="error"/>
+                            </strong>
                         </div>
                         <div class="modal-footer border-0 justify-content-between">
                             <button type="button" class="btn btn-secondary js_goto_event" data-dismiss="modal">Ok</button>
@@ -87,7 +90,20 @@
 
     <template id="registration_template_gogp" name="Registration" inherit_id="website_event.registration_template">
         <xpath expr='//t[@t-set="tickets"]' position="replace">
+            <t t-set="tickets_temp" t-value="event.event_ticket_ids.filtered(lambda ticket: ticket.is_user_registered)"/>
             <t t-set="tickets" t-value="event.event_ticket_ids.filtered(lambda ticket: not ticket.is_expired and not ticket.is_registered)"/>
+            <t t-if="tickets_temp">
+                <t t-set="counter_temp" t-value="0"/>
+                <div t-foreach="tickets_temp" t-as="ticket1">
+                    <t t-set="counter_temp" t-value="counter_temp + 1"/>
+                    <div>
+                        <span t-field="ticket1.name" />(<span t-field="ticket1.is_user_registered_no" />)
+                        <span class="o_wevent_badge badge badge-success ml-3">
+                            <i class="fa fa-check mr-2"/>Registered
+                        </span>
+                    </div>
+                </div>
+            </t>
         </xpath>
     </template>
 
@@ -204,6 +220,7 @@
                     <tr class="active">
                         <th class="text-left">Event</th>
                         <th class="text-left">Vehicle</th>
+                        <th class="text-left">Racefield</th>
                         <th class="text-left">Image</th>
                         <th class="text-left"></th>
                     </tr>
@@ -215,6 +232,9 @@
                         </td>
                         <td class="text-left"><span t-field="myevent.vehicle_id.brand_id.name"/>-
                             <span t-field="myevent.vehicle_id.model_id.name"/>
+                        </td>
+                        <td class="text-left">
+                            <span t-field="myevent.racefield_id.name"/>
                         </td>
                         <td class="text-left">
                             <img alt="Avatar" t-attf-src="/web/image/gogp.vehicles/#{myevent.vehicle_id.id}/image_128/50x50"/>
@@ -245,9 +265,20 @@
                                 <select name="vehicle_id" t-attf-class="form-control #{error.get('vehicle_id') and 'is-invalid' or ''}">
                                     <option value="">Vehicle...</option>
                                     <t t-foreach="vehicles or []" t-as="vehicle">
-                                        <option t-att-value="vehicle.id">
+                                        <option t-att-value="vehicle.id" t-att-selected="vehicle.id == int(vehicle_id) if vehicle_id else vehicle.id == myevent.vehicle_id.id">
                                             <t t-esc="vehicle.brand_id.name"/>-
                                             <t t-esc="vehicle.model_id.name"/>
+                                        </option>
+                                    </t>
+                                </select>
+                            </div>
+                            <div t-attf-class="form-group #{error.get('racefield_id') and 'o_has_error' or ''} col-xl-6">
+                                <label class="col-form-label" for="racefield_id">Racefield</label>
+                                <select name="racefield_id" t-attf-class="form-control #{error.get('racefield_id') and 'is-invalid' or ''}">
+                                    <option value="">Racefield...</option>
+                                    <t t-foreach="racefields or []" t-as="racefield">
+                                        <option t-att-value="racefield.id" t-att-selected="racefield.id == int(racefield_id) if racefield_id else racefield.id == myevent.racefield_id.id">
+                                            <t t-esc="racefield.name"/>
                                         </option>
                                     </t>
                                 </select>
@@ -525,6 +556,7 @@
                         <th class="text-left">Name</th>
                         <th class="text-left">Type</th>
                         <th class="text-left">Description</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <t t-foreach="mygroups" t-as="mygroup">
@@ -533,14 +565,96 @@
                             <span t-field="mygroup.name"/>
                         </td>
                         <td class="text-left">
-                            <span t-field="mygroup.type.name"/>
+                            <span t-field="mygroup.type_id.name"/>
                         </td>
                         <td class="text-left">
                             <span t-field="mygroup.description"/>
                         </td>
+                        <td class="text-right">
+                            <a t-att-href="'/my/gogp/group/%s' % (slug(mygroup))" class="btn btn-primary">Edit</a>
+                        </td>
                     </tr>
                 </t>
             </t>
+        </t>
+    </template>
+
+    <template id="portal_my_gogp_group_details" name="My goGP Group Detail">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">My Group Details</t>
+            </t>
+            <!--<form t-att-action="'/my/gogp/group/%s' % (slug(mygroup))" method="post" enctype="multipart/form-data">-->
+                <div class="row o_portal_details">
+                    <div class="col-lg-8">
+                        <div class="row">
+                            <div t-attf-class="form-group #{error.get('name') and 'o_has_error' or ''} col-xl-6">
+                                <label class="col-form-label" for="name">Name</label>
+                                <input type="text" name="name" t-attf-class="form-control #{error.get('name') and 'is-invalid' or ''}" t-att-value="name or mygroup.name" />
+                            </div>
+                            <div t-attf-class="form-group #{error.get('type_id') and 'o_has_error' or ''} col-xl-6">
+                                <label class="col-form-label" for="type_id">Type</label>
+                                <select name="type_id" t-attf-class="form-control #{error.get('type_id') and 'is-invalid' or ''}">
+                                    <option value="">Type...</option>
+                                    <t t-foreach="types or []" t-as="tp">
+                                        <option t-att-value="tp.id" t-att-selected="tp.id == int(type_id) if type_id else tp.id == mygroup.type_id.id">
+                                            <t t-esc="tp.name" />
+                                        </option>
+                                    </t>
+                                </select>
+                            </div>
+                            <div t-attf-class="form-group #{error.get('parent_id') and 'o_has_error' or ''} col-xl-6">
+                                <label class="col-form-label" for="parent_id">Parent Group</label>
+                                <input type="text" name="parent_id" t-attf-class="form-control #{error.get('parent_id') and 'is-invalid' or ''}" t-att-value="parent_id or mygroup.parent_id.name" />
+                            </div>
+                            <div t-attf-class="form-group #{error.get('description') and 'o_has_error' or ''} col-xl-6">
+                                <label class="col-form-label" for="description">Description</label>
+                                <input type="text" name="description" t-attf-class="form-control #{error.get('description') and 'is-invalid' or ''}" t-att-value="description or mygroup.description" />
+                            </div>
+                            <div t-attf-class="form-group #{error.get('partner_ids') and 'o_has_error' or ''} col-xl-12">
+                                <label class="col-form-label" for="partner_ids">Partners</label>
+                                <t t-if="mygroup_contacts" t-call="portal.portal_table">
+                                    <thead>
+                                        <tr class="active">
+                                            <th class="text-left">Name</th>
+                                            <th class="text-left">Email</th>
+                                            <th class="text-left">Phone</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <t t-foreach="mygroup_contacts" t-as="contact">
+                                        <tr>
+                                            <td class="text-left">
+                                                <span t-field="contact.name"/>
+                                            </td>
+                                            <td class="text-left">
+                                                <span t-field="contact.email"/>
+                                            </td>
+                                            <td class="text-left">
+                                                <span t-field="contact.phone"/>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                </t>
+                            </div>
+                            <!--<div t-attf-class="form-group #{error.get('type') and 'o_has_error' or ''} col-xl-6">
+                                <label class="col-form-label" for="type">Type</label>
+                                <input type="text" name="type" t-attf-class="form-control #{error.get('type') and 'is-invalid' or ''}" t-att-value="type or mygroup.type.id" />
+                            </div>-->
+                        </div>
+                        <div class="clearfix">
+                            <a t-att-href="'/my/gogp/groups'" class="btn btn-primary float-right mb32">Back</a>
+                            <!--<button type="submit" class="btn btn-primary float-right mb32 ">
+                                Back
+                                <span class="fa fa-long-arrow-left"/>
+                            </button>-->
+                        </div>
+                    </div>
+                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                </div>
+            <!--</form>-->
         </t>
     </template>
 

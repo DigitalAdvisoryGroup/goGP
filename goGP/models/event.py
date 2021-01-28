@@ -19,6 +19,8 @@ class EventTicket(models.Model):
     sequence = fields.Integer('Sequence', default=1)
     is_exclusive = fields.Boolean(related="product_id.is_exclusive", string="Is Exclusive", store=True, readonly=False)
     is_registered = fields.Boolean(string='Is Registered', compute='_compute_is_registered')
+    is_user_registered = fields.Boolean(string='Is User Registered', compute='_compute_is_user_registered')
+    is_user_registered_no = fields.Integer(string='Is User Registered No', compute='_compute_is_user_registered')
 
 
     @api.depends('event_id.registration_ids')
@@ -33,4 +35,16 @@ class EventTicket(models.Model):
                     ticket.is_registered = False
             else:
                 ticket.is_registered = False
+
+    @api.depends('registration_ids')
+    def _compute_is_user_registered(self):
+        for ticket in self:
+            ticket = ticket.sudo()
+            current_user_registration_ids = ticket.registration_ids.filtered(lambda reg: reg.email == self.env.user.email)
+            if current_user_registration_ids:
+                ticket.is_user_registered = True
+                ticket.is_user_registered_no = len(current_user_registration_ids)
+            else:
+                ticket.is_user_registered = False
+                ticket.is_user_registered_no = 0
 

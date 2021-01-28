@@ -69,7 +69,6 @@ class ProductPricelist(models.Model):
 
         results = {}
         for product, qty, partner in products_qty_partner:
-            print("-----partner---------",partner)
             results[product.id] = 0.0
             suitable_rule = False
 

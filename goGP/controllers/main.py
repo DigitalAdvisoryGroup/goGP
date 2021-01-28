@@ -149,7 +149,7 @@ class goGPPortal(CustomerPortal):
     @http.route(['/my/gogp/event/<model("gogp.my.event"):myevent>'], type='http', auth="user", website=True)
     def portal_my_gogp_event_detail(self, myevent=None, **kw):
         if kw and kw.get("vehicle_id"):
-            myevent.sudo().vehicle_id = int(kw['vehicle_id'])
+            myevent.sudo().write(kw)
             return request.redirect('/my/gogp/events')
         values = self._prepare_portal_layout_values()
         partner = request.env.user.partner_id
@@ -159,8 +159,10 @@ class goGPPortal(CustomerPortal):
         })
         if myevent:
             my_vehicles = request.env['gogp.vehicles'].sudo().search([('driver_id','=',partner.id)])
+            racefields = request.env['gogp.racefields'].sudo().search([])
             values.update({
                 'vehicles': my_vehicles,
+                'racefields': racefields,
                 'myevent': myevent.sudo(),
                 'page_name': 'my_event_detail',
             })
@@ -308,6 +310,27 @@ class goGPPortal(CustomerPortal):
         })
         return request.render("goGP.portal_my_gogp_groups", values)
 
+    @http.route(['/my/gogp/group/<model("gogp.social_groups"):mygroup>'], type='http', auth="user", website=True)
+    def portal_my_gogp_groups_detail(self, mygroup=None, **kw):
+        mygroup = mygroup.sudo()
+        if kw:
+            print("------kw-----------",kw)
+            return request.redirect('/my/gogp/groups')
+        values = self._prepare_portal_layout_values()
+        values.update({
+            'error': {},
+            'error_message': [],
+        })
+        if mygroup:
+            types = request.env['gogp.social_groups.type'].sudo().search([])
+            values.update({
+                'mygroup': mygroup,
+                'types': types,
+                'mygroup_contacts': mygroup.partner_ids,
+                'page_name': 'my_group_detail',
+            })
+        return request.render("goGP.portal_my_gogp_group_details", values)
+
 
 class CustomWebsiteEventController(WebsiteEventController):
 
@@ -320,15 +343,19 @@ class CustomWebsiteEventController(WebsiteEventController):
             return super(CustomWebsiteEventController, self).event_register(event, **post)
 
     def _create_attendees_from_registration_post(self, event, registration_data):
-        res = super(CustomWebsiteEventController, self)._create_attendees_from_registration_post(event,registration_data)
-        gogp_myevent_vals = {
-            'name': res.event_id.name,
-            "attendee_id": res.partner_id.id,
-            "event_id": res.event_id.id,
-            "event_registration_id": res.id,
-        }
-        request.env['gogp.my.event'].sudo().create(gogp_myevent_vals)
-        return res
+        resp = super(CustomWebsiteEventController, self)._create_attendees_from_registration_post(event,registration_data)
+        # print("--------resp------------------",resp)
+        for res in resp:
+            # print("--------res-----------",res)
+            # print("--------res.partner_id-----------",res.partner_id)
+            gogp_myevent_vals = {
+                'name': res.event_id.name,
+                "attendee_id": res.partner_id.id,
+                "event_id": res.event_id.id,
+                "event_registration_id": res.id,
+            }
+            request.env['gogp.my.event'].sudo().create(gogp_myevent_vals)
+        return resp
 
     @http.route()
     def registration_new(self, event, **post):
