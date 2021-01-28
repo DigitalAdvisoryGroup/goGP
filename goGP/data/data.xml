@@ -10,5 +10,18 @@
             <field name="state">code</field>
             <field name="code">records.action_confirm()</field>
         </record>
+
+
+        <record id="action_automatic_email_lower" model="ir.actions.server">
+            <field name="name">Automatic Email Convert Lower</field>
+            <field name="model_id" ref="base.model_res_users"/>
+            <field name="binding_model_id" ref="base.model_res_users"/>
+            <field name="state">code</field>
+            <field name="code">records.action_change_email_lower()</field>
+        </record>
+
+
+
+
     </data>
 </odoo>

@@ -9,7 +9,16 @@ class ResUsers(models.Model):
 
     login = fields.Char(help="Used to log into the system. Case insensitive.")
 
-
+    def action_change_email_lower(self):
+        rec_list = []
+        for rec in self:
+            try:
+                rec.login = rec.login.lower()
+                rec.partner_id.email = rec.partner_id.email.lower()
+            except:
+                rec_list.append(rec.id)
+                pass
+        print("----------rec_list---------",rec_list)
 
     @classmethod
     def _login(cls, db, login, password,user_agent_env):
