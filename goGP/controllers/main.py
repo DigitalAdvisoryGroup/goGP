@@ -116,9 +116,9 @@ class goGPPortal(CustomerPortal):
     def portal_my_gogp_events(self, page=1, date_begin=None, date_end=None, sortby=None, **kw):
         values = self._prepare_portal_layout_values()
         partner = request.env.user.partner_id
-        goGPmyevent = request.env['gogp.my.event']
+        goGPmyevent = request.env['gogp.my.event'].sudo()
 
-        domain = [('attendee_id', '=', partner.id)]
+        domain = [('attendee_id', '=', partner.id),('event_registration_id.event_ticket_id.price','!=',0.0)]
 
         searchbar_sortings = {
             'date': {'label': _('Date'), 'order': 'create_date desc'},
