@@ -4,6 +4,36 @@ odoo.define('goGP.portal', function (require) {
     var core = require('web.core');
     var publicWidget = require('web.public.widget');
     var _t = core._t;
+    var Dialog = require('web.Dialog');
+
+    $(document).ready(function(){
+
+    });
+      $(document).on('submit','#attendee_registration',function(){
+            debugger;
+            var values = $(this).find("input[type='email']")
+                      .map(function(){return $(this).val();}).get();
+            debugger
+            var unique_email = _.unique(values);
+            if(unique_email.length != values.length){
+                $("#attendee_registration").find('.b-submit').removeAttr('disabled');
+                $("#attendee_registration").find('.fa-spinner').remove();
+                 var buttons = [
+                {
+                    text: _t("Ok"),
+                    close: true,
+                }
+            ];
+                var dialog = new Dialog(this, {
+                buttons: buttons,
+                title: _t("Please enter unique email for each ticket"),
+            }).open();
+            }
+            else {
+            return true
+            }
+            return false
+        });
 
     publicWidget.registry.PortalAvatar = publicWidget.Widget.extend({
         selector: '#gogp_portal_avatar',

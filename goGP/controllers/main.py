@@ -354,32 +354,39 @@ class CustomWebsiteEventController(WebsiteEventController):
         else:
             return super(CustomWebsiteEventController, self).event_register(event, **post)
 
+    # @http.route()
+    # def registration_confirm(self, event, **post):
+    #     if not event.can_access_from_current_website():
+    #         raise werkzeug.exceptions.NotFound()
+    #     stop
+    #     return request.env['ir.ui.view']._render_template("goGP.event_registation_validate", {'error': (_("Please add unique email for each ticket"))})
+    #     # registrations = self._process_attendees_form(event, post)
+    #     # attendees_sudo = self._create_attendees_from_registration_post(event, registrations)
+    #     #
+    #     # return request.render("website_event.registration_complete",
+    #     #     self._get_registration_confirm_values(event, attendees_sudo))
+
+
     def _create_attendees_from_registration_post(self, event, registration_data):
         resp = super(CustomWebsiteEventController, self)._create_attendees_from_registration_post(event,registration_data)
         for registration_values in registration_data:
             reg_email = registration_values['email'].lower()
             registration_values['email'] = reg_email
             if not reg_email == request.env.user.email.lower():
-                another_partner_id = request.env['res.partner'].sudo().search([('email', '=', reg_email)])
-                if another_partner_id:
-                    portal_user_id = request.env['res.users'].sudo().search([('partner_id', '=', another_partner_id.id)])
-                    if not portal_user_id:
-                        request.env['res.users'].sudo().create({
-                            'company_id': request.env.company.id,
-                            'partner_id': another_partner_id.id,
-                            'name': registration_values['name'],
-                            'login': reg_email,
-                            'email': reg_email,
-                            'groups_id': [(6, 0, [request.env.ref('base.group_portal').id])]
-                        })
-                if not another_partner_id:
-                    request.env['res.users'].sudo().create({
+                portal_user_id = request.env['res.users'].sudo().search([('login', '=', reg_email)])
+                if not portal_user_id:
+                    another_partner_id = request.env['res.partner'].sudo().search([('email', '=', reg_email)])
+                    user_vals = {
                         'company_id': request.env.company.id,
                         'name': registration_values['name'],
                         'login': reg_email,
                         'email': reg_email,
+                        'lang': "de_CH",
                         'groups_id': [(6, 0, [request.env.ref('base.group_portal').id])]
-                    })
+                    }
+                    if another_partner_id:
+                        user_vals.update({'partner_id': another_partner_id.ids[0]})
+                    request.env['res.users'].sudo().create(user_vals)
         for res in resp:
             gogp_myevent_vals = {
                 'name': res.event_id.name,

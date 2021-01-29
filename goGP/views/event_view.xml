@@ -121,9 +121,8 @@
                     </div>
                     <div class="col-lg my-2">
                         <label>Phone
-                            <small>(Optional)</small>
                         </label>
-                        <input class="form-control" type="tel" t-att-value="user.phone" t-attf-name="#{counter}-phone"/>
+                        <input class="form-control" type="tel" t-att-value="user.phone" t-attf-name="#{counter}-phone" required="This field is required"/>
                     </div>
                     <input class="d-none" type="text" t-attf-name="#{counter}-event_ticket_id" t-attf-value="#{ticket['id']}"/>
                 </div>
@@ -140,13 +139,16 @@
                     </div>
                     <div class="col-lg my-2">
                         <label>Phone
-                            <small>(Optional)</small>
+
                         </label>
-                        <input class="form-control" type="tel" t-attf-name="#{counter}-phone"/>
+                        <input class="form-control" type="tel" t-attf-name="#{counter}-phone" required="This field is required"/>
                     </div>
                     <input class="d-none" type="text" t-attf-name="#{counter}-event_ticket_id" t-attf-value="#{ticket['id']}"/>
                 </div>
             </t>
+        </xpath>
+        <xpath expr="//div[hasclass('modal-footer')]/button[hasclass('btn-primary')]" position="attributes">
+            <attribute name="class">btn btn-primary b-submit</attribute>
         </xpath>
     </template>
 
