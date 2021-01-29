@@ -68,6 +68,15 @@
         </t>
     </template>
 
+
+    <template id="confirmation_gogp" name="goGP Confirmation" inherit_id="website_sale.confirmation">
+        <xpath expr="//t[@t-call='website_sale.cart_summary']" position="after">
+            <div class="col-12 col-xl-auto text-center">
+                <a href="/my/gogp/events" class="btn btn-primary">Continue to edit information</a>
+            </div>
+        </xpath>
+    </template>
+
     <template id="event_registation_validate" name="Event Registration: Validate">
         <div id="modal_attendees_registration" class="modal fade" tabindex="-1" role="dialog">
             <div class="modal-dialog modal-lg" role="document">
