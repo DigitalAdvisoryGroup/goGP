@@ -143,6 +143,11 @@
                         </label>
                         <input class="form-control" type="tel" t-attf-name="#{counter}-phone" required="This field is required"/>
                     </div>
+                    <div class="col-lg my-2">
+                        <label>Sidecar co-pilot</label>
+                        <input type="checkbox" class="form-control" t-attf-name="#{counter}-sidecar" />
+                    </div>
+
                     <input class="d-none" type="text" t-attf-name="#{counter}-event_ticket_id" t-attf-value="#{ticket['id']}"/>
                 </div>
             </t>

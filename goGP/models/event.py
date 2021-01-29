@@ -52,6 +52,30 @@ class EventTicket(models.Model):
 class EventRegistration(models.Model):
     _inherit = 'event.registration'
 
+    sidecar = fields.Boolean("Sidecar")
+
+
+    def create_socialgroup_sidecar(self):
+        parnter_id = self.env["res.partner"].sudo()
+        social_group_name = False
+        for reg in self:
+            email_partner = self.env['res.partner'].sudo().search([('email','=',reg.email)])
+            if email_partner:
+                if not reg.sidecar:
+                    social_group_name = email_partner.name+"-Group"
+                parnter_id |= email_partner
+        if parnter_id:
+            sidecar_type_id = self.env['gogp.social_groups.type'].sudo().search([('code','=','sidcar')])
+            if sidecar_type_id:
+                socialgroup_vals = {
+                    "type_id": sidecar_type_id.id,
+                    "partner_ids": parnter_id.ids,
+                    "name": social_group_name
+                }
+                self.env['gogp.social_groups'].sudo().create(socialgroup_vals)
+
+
+
     @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:

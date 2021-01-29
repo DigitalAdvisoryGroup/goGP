@@ -363,19 +363,6 @@ class CustomWebsiteEventController(WebsiteEventController):
         else:
             return super(CustomWebsiteEventController, self).event_register(event, **post)
 
-    # @http.route()
-    # def registration_confirm(self, event, **post):
-    #     if not event.can_access_from_current_website():
-    #         raise werkzeug.exceptions.NotFound()
-    #     stop
-    #     return request.env['ir.ui.view']._render_template("goGP.event_registation_validate", {'error': (_("Please add unique email for each ticket"))})
-    #     # registrations = self._process_attendees_form(event, post)
-    #     # attendees_sudo = self._create_attendees_from_registration_post(event, registrations)
-    #     #
-    #     # return request.render("website_event.registration_complete",
-    #     #     self._get_registration_confirm_values(event, attendees_sudo))
-
-
     def _create_attendees_from_registration_post(self, event, registration_data):
         resp = super(CustomWebsiteEventController, self)._create_attendees_from_registration_post(event,registration_data)
         for registration_values in registration_data:
@@ -404,7 +391,40 @@ class CustomWebsiteEventController(WebsiteEventController):
                 "event_registration_id": res.id,
             }
             request.env['gogp.my.event'].sudo().create(gogp_myevent_vals)
+        if any(resp.mapped("sidecar")):
+            resp.create_socialgroup_sidecar()
         return resp
+
+    def _process_attendees_form(self, event, form_details):
+        """ Process data posted from the attendee details form.
+
+        :param form_details: posted data from frontend registration form, like
+            {'1-name': 'r', '1-email': 'r@r.com', '1-phone': '', '1-event_ticket_id': '1'}
+        """
+        allowed_fields = {'name', 'phone', 'email', 'mobile', 'event_id', 'partner_id', 'event_ticket_id','sidecar'}
+        registration_fields = {key: v for key, v in request.env['event.registration']._fields.items() if key in allowed_fields}
+        registrations = {}
+        global_values = {}
+        for key, value in form_details.items():
+            counter, attr_name = key.split('-', 1)
+            field_name = attr_name.split('-')[0]
+            if field_name not in registration_fields:
+                continue
+            elif isinstance(registration_fields[field_name], (fields.Many2one, fields.Integer)):
+                value = int(value) or False  # 0 is considered as a void many2one aka False
+            else:
+                value = value
+
+            if counter == '0':
+                global_values[attr_name] = value
+            else:
+                registrations.setdefault(counter, dict())[attr_name] = value
+        for key, value in global_values.items():
+            for registration in registrations.values():
+                registration[key] = value
+        print("-----list(registrations.values())---our-----",list(registrations.values()))
+        return list(registrations.values())
+
 
     @http.route()
     def registration_new(self, event, **post):
