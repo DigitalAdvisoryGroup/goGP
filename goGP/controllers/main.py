@@ -101,11 +101,11 @@ class goGPPortal(CustomerPortal):
         values = super()._prepare_home_portal_values(counters)
         partner = request.env.user.partner_id
 
-        goGPmyevent = request.env['gogp.my.event']
+        goGPmyevent = request.env['gogp.my.event'].sudo()
         goGPmyvehicle = request.env['gogp.vehicles']
         goGPmygroups = request.env['gogp.social_groups']
         if 'myevent_count' in counters:
-            values['myevent_count'] = goGPmyevent.search_count([('attendee_id', '=', partner.id)]) if goGPmyevent.check_access_rights('read', raise_exception=False) else 0
+            values['myevent_count'] = goGPmyevent.search_count([('attendee_id', '=', partner.id),('event_registration_id.event_ticket_id.price','!=',0.0)]) if goGPmyevent.check_access_rights('read', raise_exception=False) else 0
         if 'myvehicle_count' in counters:
             values['myvehicle_count'] = goGPmyvehicle.search_count([('driver_id', '=', partner.id)]) if goGPmyvehicle.check_access_rights('read', raise_exception=False) else 0
         if 'mygroups_count' in counters:
