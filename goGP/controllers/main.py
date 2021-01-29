@@ -4,9 +4,18 @@ from odoo import fields, http, _
 from odoo.http import request
 from odoo.addons.http_routing.models.ir_http import slug
 from odoo.addons.website_event.controllers.main import WebsiteEventController
+from odoo.addons.website_sale.controllers.main import WebsiteSale
 from odoo.addons.portal.controllers.portal import CustomerPortal, pager as portal_pager, get_records_pager
 import base64
 import werkzeug
+
+
+class goGPWebsiteSale(WebsiteSale):
+
+    @http.route()
+    def checkout(self, **post):
+        order = request.website.sale_get_order(update_pricelist=True)
+        return super(goGPWebsiteSale, self).checkout(**post)
 
 
 class goGPPortal(CustomerPortal):
