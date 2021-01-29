@@ -59,7 +59,7 @@ class EventRegistration(models.Model):
         parnter_id = self.env["res.partner"].sudo()
         social_group_name = False
         for reg in self:
-            email_partner = self.env['res.partner'].sudo().search([('email','=',reg.email)])
+            email_partner = self.env['res.partner'].sudo().search([('email','=',reg.email)],limit=1)
             if email_partner:
                 if not reg.sidecar:
                     social_group_name = email_partner.name+"-Group"
