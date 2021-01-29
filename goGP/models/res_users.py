@@ -2,6 +2,8 @@
 # Part of Odoo Module Developed by Candidroot Solutions Pvt. Ltd.
 
 from odoo import api, fields, models
+import logging
+_logger = logging.getLogger(__name__)
 
 class ResUsers(models.Model):
 
@@ -18,7 +20,7 @@ class ResUsers(models.Model):
             except:
                 rec_list.append(rec.id)
                 pass
-        print("----------rec_list---------",rec_list)
+        _logger.info("----------rec_list---------%s",rec_list)
 
     @classmethod
     def _login(cls, db, login, password,user_agent_env):

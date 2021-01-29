@@ -25,6 +25,7 @@ class goGPPortal(CustomerPortal):
         })
 
         if post and request.httprequest.method == 'POST':
+            print("------post---------",post)
             if 'image_1920' in post:
                 image_1920 = post.get('image_1920')
                 if image_1920:
@@ -45,7 +46,7 @@ class goGPPortal(CustomerPortal):
             if not error:
                 values = {key: post[key] for key in self.MANDATORY_BILLING_FIELDS}
                 values.update({key: post[key] for key in self.OPTIONAL_BILLING_FIELDS if key in post})
-                for field in set(['country_id', 'state_id']) & set(values.keys()):
+                for field in set(['country_id', 'state_id','partner_sex_id','partner_shirt_size_id']) & set(values.keys()):
                     try:
                         values[field] = int(values[field])
                     except:
@@ -224,6 +225,11 @@ class goGPPortal(CustomerPortal):
             if 'clear_avatar' in kw:
                 kw.pop("clear_avatar")
                 kw.update({'image_128': False})
+            for field in set(['brand_id', 'model_id', 'vehicle_type_id', 'fuel_type_id']) & set(kw.keys()):
+                try:
+                    kw[field] = int(kw[field])
+                except:
+                    kw[field] = False
             myvehicle.sudo().write(kw)
             return request.redirect('/my/gogp/vehicles')
         values = self._prepare_portal_layout_values()
@@ -352,26 +358,28 @@ class CustomWebsiteEventController(WebsiteEventController):
         resp = super(CustomWebsiteEventController, self)._create_attendees_from_registration_post(event,registration_data)
         for registration_values in registration_data:
             reg_email = registration_values['email'].lower()
-            another_partner_id = request.env['res.partner'].sudo().search([('email', '=', reg_email)])
-            if another_partner_id:
-                portal_user_id = request.env['res.users'].sudo().search([('partner_id', '=', another_partner_id.id)])
-                if not portal_user_id:
+            registration_values['email'] = reg_email
+            if not reg_email == request.env.user.email.lower():
+                another_partner_id = request.env['res.partner'].sudo().search([('email', '=', reg_email)])
+                if another_partner_id:
+                    portal_user_id = request.env['res.users'].sudo().search([('partner_id', '=', another_partner_id.id)])
+                    if not portal_user_id:
+                        request.env['res.users'].sudo().create({
+                            'company_id': request.env.company.id,
+                            'partner_id': another_partner_id.id,
+                            'name': registration_values['name'],
+                            'login': reg_email,
+                            'email': reg_email,
+                            'groups_id': [(6, 0, [request.env.ref('base.group_portal').id])]
+                        })
+                if not another_partner_id:
                     request.env['res.users'].sudo().create({
                         'company_id': request.env.company.id,
-                        'partner_id': another_partner_id.id,
                         'name': registration_values['name'],
                         'login': reg_email,
                         'email': reg_email,
                         'groups_id': [(6, 0, [request.env.ref('base.group_portal').id])]
                     })
-            if not another_partner_id:
-                request.env['res.users'].sudo().create({
-                    'company_id': request.env.company.id,
-                    'name': registration_values['name'],
-                    'login': registration_values['email'].lower(),
-                    'email': registration_values['email'].lower(),
-                    'groups_id': [(6, 0, [request.env.ref('base.group_portal').id])]
-                })
         for res in resp:
             gogp_myevent_vals = {
                 'name': res.event_id.name,
