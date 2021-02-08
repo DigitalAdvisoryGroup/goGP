@@ -29,6 +29,8 @@
                                     <field name="event_id"/>
                                     <field name="state"/>
                                     <field name="vehicle_id"/>
+                                    <field name="racefield_id"/>
+                                    <field name="event_ticket_id"/>
                                 </tree>
                             </field>
                         </group>

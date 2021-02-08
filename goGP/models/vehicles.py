@@ -31,7 +31,7 @@ class VehiclesV(models.Model):
     seats = fields.Integer("Seats Number")
     doors = fields.Integer("Doors Number")
     description = fields.Text("Vehicle Description")
-    modifications = fields.Char("Modification")
+    modifications = fields.Text("Modification")
 
     cm3 = fields.Integer("Cubic centimetres")
     cylinders = fields.Integer("Cylinders")
@@ -49,8 +49,16 @@ class VehiclesV(models.Model):
         result = []
         for rec in self:
             name = rec.name
-            if rec.name and rec.model_id and rec.driver_id:
-                name = rec.name+" ("+rec.model_id.name + '-' + rec.driver_id.name+')'
+            if rec.name and rec.model_id and rec.model_id.name:
+                name = rec.name+" ("+rec.model_id.name+')'
+            elif rec.model_id and rec.model_id.name:
+                name = rec.model_id.name
+            elif rec.model_id and rec.model_id.name:
+                name = rec.model_id.name
+            elif rec.brand_id and rec.brand_id.name:
+                name = rec.brand_id.name
+            elif rec.name:
+                name = rec.name
             result.append((rec.id, name))
         return result
 

@@ -239,6 +239,12 @@ class goGPPortal(CustomerPortal):
                     kw[field] = int(kw[field])
                 except:
                     kw[field] = False
+            for field in set(['odometer', 'cm3', 'cylinders', 'horsepower','power']) & set(kw.keys()):
+                try:
+
+                    kw[field] = float(kw[field].replace("'",""))
+                except:
+                    kw[field] = False
             myvehicle.sudo().write(kw)
             return request.redirect('/my/gogp/vehicles')
         values = self._prepare_portal_layout_values()
@@ -264,7 +270,6 @@ class goGPPortal(CustomerPortal):
     @http.route(['/my/gogp/vehicle/add'], type='http', auth="user", website=True)
     def portal_my_gogp_vehicle_add(self, **kw):
         if kw:
-            print("--------kw---------------",kw)
             image_128 = kw.get("image_128") and base64.b64encode(kw.get("image_128").read()) or ''
             kw.update({'driver_id': request.env.user.partner_id.id,'image_128':image_128})
             request.env['gogp.vehicles'].sudo().create(kw)
@@ -292,7 +297,6 @@ class goGPPortal(CustomerPortal):
         values = self._prepare_portal_layout_values()
         partner = request.env.user.partner_id
         goGPmygroups = request.env['gogp.social_groups']
-
         domain = [('partner_ids', 'in', partner.ids)]
 
         searchbar_sortings = {
@@ -335,7 +339,6 @@ class goGPPortal(CustomerPortal):
     def portal_my_gogp_groups_detail(self, mygroup=None, **kw):
         mygroup = mygroup.sudo()
         if kw:
-            print("------kw-----------",kw)
             return request.redirect('/my/gogp/groups')
         values = self._prepare_portal_layout_values()
         values.update({

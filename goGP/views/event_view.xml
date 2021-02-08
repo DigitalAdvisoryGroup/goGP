@@ -408,7 +408,7 @@
                             </div>
                             <div t-attf-class="form-group #{error.get('description') and 'o_has_error' or ''} col-xl-12">
                                 <label class="col-form-label" for="description">Description</label>
-                                <input type="text" name="description" t-attf-class="form-control #{error.get('description') and 'is-invalid' or ''}" t-att-value="description or vehicles.description"/>
+                                <textarea name="description" rows="4" t-attf-class="form-control #{error.get('description') and 'is-invalid' or ''}"><t t-esc="description or vehicles.description" /></textarea>
                             </div>
                             <div t-attf-class="form-group #{error.get('vehicle_models_type') and 'o_has_error' or ''} col-xl-6">
                                 <label class="col-form-label" for="vehicle_type_id">Vehicle Type</label>
@@ -453,7 +453,7 @@
                             <div class="clearfix"/>
                             <div t-attf-class="form-group #{error.get('modifications') and 'o_has_error' or ''} col-xl-12">
                                 <label class="col-form-label" for="modifications">Vehicle Modifications</label>
-                                <input type="text" name="modifications" t-attf-class="form-control #{error.get('modifications') and 'is-invalid' or ''}" t-att-value="modifications or vehicles.modifications"/>
+                                <textarea rows="4" name="modifications" t-attf-class="form-control #{error.get('modifications') and 'is-invalid' or ''}"><t t-esc="modifications or vehicles.modifications" /></textarea>
                             </div>
                             <div t-attf-class="form-group #{error.get('cm3') and 'o_has_error' or ''} col-xl-6">
                                 <label class="col-form-label" for="cm3">Cubic centimetres</label>
