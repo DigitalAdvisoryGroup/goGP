@@ -48,17 +48,13 @@ class VehiclesV(models.Model):
     def name_get(self):
         result = []
         for rec in self:
-            name = rec.name
-            if rec.name and rec.model_id and rec.model_id.name:
-                name = rec.name+" ("+rec.model_id.name+')'
-            elif rec.model_id and rec.model_id.name:
-                name = rec.model_id.name
-            elif rec.model_id and rec.model_id.name:
-                name = rec.model_id.name
-            elif rec.brand_id and rec.brand_id.name:
-                name = rec.brand_id.name
-            elif rec.name:
-                name = rec.name
+            name = ''
+            if rec.brand_id and rec.brand_id.name:
+                name += rec.brand_id.name
+            if rec.model_id and rec.model_id.name:
+                name += "-"+rec.model_id.name
+            if rec.name:
+                name += '-'+rec.name
             result.append((rec.id, name))
         return result
 
