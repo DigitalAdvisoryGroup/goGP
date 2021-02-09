@@ -330,6 +330,7 @@
                     <tr class="active">
                         <th class="text-left">Brand</th>
                         <th class="text-left">Model</th>
+                        <th class="text-left">Name</th>
                         <th class="text-left">Image</th>
                         <th></th>
                     </tr>
@@ -341,6 +342,9 @@
                         </td>
                         <td class="text-left">
                             <span t-field="myvehicle.model_id.name"/>
+                        </td>
+                        <td class="text-left">
+                            <span t-field="myvehicle.name"/>
                         </td>
                         <td class="text-left">
                             <img alt="Avatar" t-attf-src="/web/image/gogp.vehicles/#{myvehicle.id}/image_128/50x50"/>
@@ -583,7 +587,7 @@
                             </div>
                             <div t-attf-class="form-group #{error.get('description') and 'o_has_error' or ''} col-xl-12">
                                 <label class="col-form-label" for="description">Description</label>
-                                <input type="text" name="description" t-attf-class="form-control #{error.get('description') and 'is-invalid' or ''}" />
+                                <textarea name="description" rows="4" t-attf-class="form-control #{error.get('description') and 'is-invalid' or ''}" />
                             </div>
                             <div t-attf-class="form-group #{error.get('vehicle_models_type') and 'o_has_error' or ''} col-xl-6">
                                 <label class="col-form-label" for="vehicle_type_id">Vehicle Type</label>
@@ -628,6 +632,10 @@
                             <div t-attf-class="form-group #{error.get('modifications') and 'o_has_error' or ''} col-xl-12">
                                 <label class="col-form-label" for="modifications">Vehicle Modifications</label>
                                 <input type="text" name="modifications" t-attf-class="form-control #{error.get('modifications') and 'is-invalid' or ''}" />
+                            </div>
+                            <div t-attf-class="form-group #{error.get('modifications') and 'o_has_error' or ''} col-xl-12">
+                                <label class="col-form-label" for="modifications">Vehicle Modifications</label>
+                                <textarea rows="4" name="modifications" t-attf-class="form-control #{error.get('modifications') and 'is-invalid' or ''}" />
                             </div>
                             <div t-attf-class="form-group #{error.get('cm3') and 'o_has_error' or ''} col-xl-6">
                                 <label class="col-form-label" for="cm3">Cubic centimetres</label>

@@ -158,7 +158,11 @@ class goGPPortal(CustomerPortal):
 
     @http.route(['/my/gogp/event/<model("gogp.my.event"):myevent>'], type='http', auth="user", website=True)
     def portal_my_gogp_event_detail(self, myevent=None, **kw):
-        if kw and kw.get("vehicle_id"):
+        if kw:
+            if not kw.get("vehicle_id"):
+                kw['vehicle_id'] = False
+            if not kw.get("racefield_id"):
+                kw['racefield_id'] = False
             myevent.sudo().write(kw)
             return request.redirect('/my/gogp/events')
         values = self._prepare_portal_layout_values()
@@ -241,7 +245,6 @@ class goGPPortal(CustomerPortal):
                     kw[field] = False
             for field in set(['odometer', 'cm3', 'cylinders', 'horsepower','power']) & set(kw.keys()):
                 try:
-
                     kw[field] = float(kw[field].replace("'",""))
                 except:
                     kw[field] = False
