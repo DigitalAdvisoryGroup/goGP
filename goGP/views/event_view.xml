@@ -246,8 +246,8 @@
                         <td class="text-left">
                             <span t-field="myevent.event_id.name"/>
                         </td>
-                        <td class="text-left"><span t-field="myevent.vehicle_id.brand_id.name"/>-
-                            <span t-field="myevent.vehicle_id.model_id.name"/>
+                        <td class="text-left">
+                            <span t-field="myevent.vehicle_id.display_name"/>
                         </td>
                         <td class="text-left">
                             <span t-field="myevent.racefield_id.name"/>
