@@ -395,7 +395,7 @@
                                 <select name="model_id" t-attf-class="form-control #{error.get('model_id') and 'is-invalid' or ''}">
                                     <option value="">Models...</option>
                                     <t t-foreach="vehicle_models or []" t-as="model">
-                                        <option t-att-value="model.id" t-att-selected="model.id == int(model_id) if model_id else model.id == vehicles.model_id.id">
+                                        <option t-att-value="model.id" t-att-brand_id="model.brand_id.id" t-att-selected="model.id == int(model_id) if model_id else model.id == vehicles.model_id.id">
                                             <t t-esc="model.name"/>
                                         </option>
                                     </t>
@@ -570,7 +570,7 @@
                                 <select name="model_id" t-attf-class="form-control #{error.get('model_id') and 'is-invalid' or ''}">
                                     <option value="">Models...</option>
                                     <t t-foreach="vehicle_models or []" t-as="model">
-                                        <option t-att-value="model.id" >
+                                        <option t-att-value="model.id" t-att-brand_id="model.brand_id.id" >
                                             <t t-esc="model.name"/>
                                         </option>
                                     </t>

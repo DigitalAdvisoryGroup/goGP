@@ -8,6 +8,22 @@ odoo.define('goGP.portal', function (require) {
 
     $(document).ready(function(){
 
+        $('select[name="brand_id"]').change(function(e){
+            var brand_id = $(this).val();
+            $('select[name="model_id"]').val("");
+            $('select[name="model_id"]').find('option').removeAttr('selected');
+            $('select[name="model_id"]').find('option').hide();
+            $('select[name="model_id"]').find(`option[brand_id="${brand_id}"]`).show();
+        });
+        if($('select[name="brand_id"]').length == 1 & $('select[name="model_id"]').length == 1){
+            var brand_id = $('select[name="brand_id"]').val();
+            var model_id = $('select[name="model_id"]').val();
+            $('select[name="model_id"]').val("");
+            $('select[name="model_id"]').find('option').hide();
+            $('select[name="model_id"]').find(`option[brand_id="${brand_id}"]`).show();
+            $('select[name="model_id"]').val(model_id);
+        }
+
     });
       $(document).on('submit','#attendee_registration',function(){
             debugger;
