@@ -41,3 +41,11 @@ class ResUsers(models.Model):
         if vals.get("login"):
             vals["login"] = vals["login"].lower()
         return super(ResUsers, self).write(vals)
+
+    def _create_user_from_template(self, values):
+        res = super(ResUsers, self)._create_user_from_template(values)
+        if 'website_id' in self.env.context:
+            website_browse = self.env['website'].sudo().browse(self.env.context.get("website_id"))
+            res.write({'company_id': website_browse.company_id.id, 'company_ids': website_browse.company_id.ids})
+            res.partner_id.company_id = website_browse.company_id.id
+        return res
