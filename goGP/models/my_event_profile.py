@@ -20,7 +20,22 @@ class MyEvent(models.Model):
     racefield_id = fields.Many2one("gogp.racefields", string="Racefield")
     startnumber = fields.Char("StartNumber")
     pitid = fields.Char("Box ID")
-    nomination_id = fields.Char("Nomination ID")
+    nomination_id = fields.Many2one("gogp.nomination","Nomination ID")
+
+
+    def action_create_nomination(self):
+        for rec in self:
+            if not rec.nomination_id:
+                nomination_vals = {
+                    "tech_approval_date" : fields.Datetime.now(),
+                    "vehicle_id": rec.vehicle_id and rec.vehicle_id.id or False,
+                    "event_id" : rec.event_id and rec.event_id.id or False,
+                    "driver_id": rec.attendee_id and rec.attendee_id.id or False
+                }
+                nomination_id = self.env['gogp.nomination'].create(nomination_vals)
+                rec.nomination_id = nomination_id.id
+
+
 
 
 

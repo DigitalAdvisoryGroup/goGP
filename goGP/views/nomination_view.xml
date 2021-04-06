@@ -7,7 +7,10 @@
         <field name="model">gogp.nomination</field>
         <field name="arch" type="xml">
             <tree string="goGP nomination" multi_edit="1" sample="1">
-                <field name="name"/>
+                <field name="event_id"/>
+                <field name="vehicle_id"/>
+                <field name="tech_approval_date"/>
+                <field name="driver_id"/>
             </tree>
         </field>
     </record>
@@ -17,7 +20,10 @@
         <field name="model">gogp.nomination</field>
         <field name="arch" type="xml">
             <search string="goGP nomination">
-                <field name="name"/>
+                <field name="event_id"/>
+                <field name="vehicle_id"/>
+                <field name="tech_approval_date"/>
+                <field name="driver_id"/>
             </search>
         </field>
     </record>
@@ -28,14 +34,13 @@
             <form string="goGP nomination">
                 <sheet>
                         <div>
-                            <label for="name" class="oe_edit_only"/>
+                            <label for="event_id" class="oe_edit_only"/>
                             <h1>
-                                <field name="name"/>
+                                <field name="event_id"/>
                             </h1>
                         </div>
                         <group>
                             <group>
-                                <field name="event_id"/>
                                 <field name="vehicle_id"/>
                                 <field name="tech_approval_date"/>
                             </group>

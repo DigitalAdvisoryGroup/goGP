@@ -21,6 +21,16 @@
         </record>
 
 
+        <record id="action_create_nomination_my_event" model="ir.actions.server">
+            <field name="name">Automatic Nomination Create</field>
+            <field name="model_id" ref="model_gogp_my_event"/>
+            <field name="binding_model_id" ref="model_gogp_my_event"/>
+            <field name="binding_view_types">form,list</field>
+            <field name="state">code</field>
+            <field name="code">action = records.action_create_nomination()</field>
+        </record>
+
+
 
 
     </data>
