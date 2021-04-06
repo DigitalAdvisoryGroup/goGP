@@ -270,6 +270,12 @@ class goGPPortal(CustomerPortal):
             })
         return request.render("goGP.portal_my_gogp_vehicle_details", values)
 
+    @http.route(['/my/gogp/vehicle/delete/<model("gogp.vehicles"):myvehicle>'], type='http', auth="user", website=True)
+    def portal_my_gogp_vehicle_delete(self, myvehicle=None, **kw):
+        if myvehicle:
+            myvehicle.unlink()
+        return request.redirect("/my/gogp/vehicles")
+
     @http.route(['/my/gogp/vehicle/add'], type='http', auth="user", website=True)
     def portal_my_gogp_vehicle_add(self, **kw):
         if kw:

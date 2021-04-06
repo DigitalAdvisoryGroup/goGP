@@ -29,3 +29,6 @@ class ResPartner(models.Model):
     partner_shirt_size_id = fields.Many2one("partner.shirt.size", "Shirt Size")
     birthdate = fields.Date(string="Birthdate")
     social_group_ids = fields.Many2many('gogp.social_groups', 'social_group_partner_rel', 'partner_id', 'social_group_id', string="Social Group")
+    surname = fields.Char("Surname")
+    givenname = fields.Char("Givenname")
+

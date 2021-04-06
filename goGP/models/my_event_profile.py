@@ -18,6 +18,9 @@ class MyEvent(models.Model):
     state = fields.Selection(related="event_registration_id.state", string="Registration State")
     vehicle_id = fields.Many2one("gogp.vehicles", string="Vehicle")
     racefield_id = fields.Many2one("gogp.racefields", string="Racefield")
+    startnumber = fields.Char("StartNumber")
+    pitid = fields.Char("Box ID")
+    nomination_id = fields.Char("Nomination ID")
 
 
 

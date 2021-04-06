@@ -27,14 +27,22 @@
         <field name="arch" type="xml">
             <form string="goGP nomination">
                 <sheet>
-                    <group>
                         <div>
                             <label for="name" class="oe_edit_only"/>
                             <h1>
                                 <field name="name"/>
                             </h1>
                         </div>
-                    </group>
+                        <group>
+                            <group>
+                                <field name="event_id"/>
+                                <field name="vehicle_id"/>
+                                <field name="tech_approval_date"/>
+                            </group>
+                            <group>
+                                <field name="driver_id"/>
+                            </group>
+                        </group>
                 </sheet>
             </form>
         </field>

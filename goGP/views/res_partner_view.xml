@@ -11,6 +11,8 @@
                     <field name="partner_sex_id" />
                     <field name="partner_shirt_size_id" />
                     <field name="birthdate" />
+                    <field name="surname" />
+                    <field name="givenname" />
                 </xpath>
                 <xpath expr="//page[@name='internal_notes']" position="after">
                     <page name="socialgroup" string="Social Groups">

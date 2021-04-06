@@ -349,6 +349,7 @@
                             <img alt="Avatar" t-attf-src="/web/image/gogp.vehicles/#{myvehicle.id}/image_128/50x50"/>
                         </td>
                         <td class="text-right">
+                            <a t-att-href="'/my/gogp/vehicle/delete/%s' % (slug(myvehicle))" class="btn btn-primary">Delete</a>
                             <a t-att-href="'/my/gogp/vehicle/%s' % (slug(myvehicle))" class="btn btn-primary">Edit</a>
                         </td>
                     </tr>
