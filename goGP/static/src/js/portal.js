@@ -7,6 +7,12 @@ odoo.define('goGP.portal', function (require) {
     var Dialog = require('web.Dialog');
 
     $(document).ready(function(){
+        var delete_id;
+        $("button.delete-btn").on('click', function (ev) {
+            $('.popup_open').modal('show');
+            delete_id = window.location.origin+'/my/gogp/vehicle/delete/'+ev.currentTarget.previousElementSibling.value
+            $("a.delete-confirm").attr("href", delete_id);
+        });
 
         $('select[name="brand_id"]').change(function(e){
             var brand_id = $(this).val();

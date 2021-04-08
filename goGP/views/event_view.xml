@@ -334,6 +334,21 @@
                         <th></th>
                     </tr>
                 </thead>
+                <div class="popup_open modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <div class="modal-content border-0">
+                            <main class="modal-body mt-md-5">
+                                <div class="text-center text-muted">
+                                    <span>Are you sure you want to delete this?</span>
+                                </div>
+                            </main>
+                            <footer class="modal-footer">
+                                <a class="btn btn-primary delete-confirm" href="">Confirm</a>
+                                <button class="btn btn-primary" data-dismiss="modal" type="button">Close</button>
+                            </footer>
+                        </div>
+                    </div>
+                </div>
                 <t t-foreach="myvehicles" t-as="myvehicle">
                     <tr>
                         <td class="text-left">
@@ -349,7 +364,8 @@
                             <img alt="Avatar" t-attf-src="/web/image/gogp.vehicles/#{myvehicle.id}/image_128/50x50"/>
                         </td>
                         <td class="text-right">
-                            <a t-att-href="'/my/gogp/vehicle/delete/%s' % (slug(myvehicle))" class="btn btn-primary">Delete</a>
+                            <input type="hidden" t-att-value="slug(myvehicle)"/>
+                            <button class="delete-btn btn btn-primary">Delete</button>
                             <a t-att-href="'/my/gogp/vehicle/%s' % (slug(myvehicle))" class="btn btn-primary">Edit</a>
                         </td>
                     </tr>

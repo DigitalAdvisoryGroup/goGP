@@ -27,7 +27,7 @@ class MyEvent(models.Model):
         for rec in self:
             if not rec.nomination_id:
                 nomination_vals = {
-                    "tech_approval_date" : fields.Datetime.now(),
+                    "tech_approval_date" : False,
                     "vehicle_id": rec.vehicle_id and rec.vehicle_id.id or False,
                     "event_id" : rec.event_id and rec.event_id.id or False,
                     "driver_id": rec.attendee_id and rec.attendee_id.id or False
