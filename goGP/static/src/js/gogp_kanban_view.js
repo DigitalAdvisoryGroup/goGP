@@ -12,6 +12,7 @@ KanbanRecord.include({
     _render: function () {
         var self = this;
         if (this.modelName == 'gogp.social_groups'){
+
             this.defs = [];
 
             // call 'on_detach_callback' on each subwidget as they will be removed
@@ -54,7 +55,7 @@ KanbanRecord.include({
             })
         }
         else{
-             self._super.apply(self, arguments);
+             return self._super.apply(self, arguments);
         }
 
     },
