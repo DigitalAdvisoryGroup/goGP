@@ -461,4 +461,56 @@ class CustomWebsiteEventController(WebsiteEventController):
         return request.env['ir.ui.view']._render_template("website_event.registration_attendee_details", {'user': request.env.user,'tickets': tickets, 'event': event, 'availability_check': availability_check})
 
 
-
+class RaceFieldsController(http.Controller):
+    
+    @http.route('/racefields',type="http",auth="user",website=True)
+    def display_reacefields(self,**kw):
+        print("Called----display_reacefields---")
+        racefields = request.env['gogp.racefields'].sudo().search([])
+        values = {
+            'racefields' : racefields
+        }
+        return request.render('goGP.website_racefield_template',values)
+    
+    
+    
+    @http.route('/get_racefields/data',type="json",auth="user")
+    def get_racefields_data(self,**kw):
+        print("Data-----")
+        if kw.get('raceid'):
+            racefield_id = request.env['gogp.racefields'].sudo().browse(kw.get('raceid'))
+            
+            if racefield_id:
+                gp_events = request.env['gogp.my.event'].sudo().search([('racefield_id','=',racefield_id.id)])
+                vehicle_list = []
+                for event in gp_events:
+                    if event.vehicle_id:
+                        vehicle_list.append({
+                            'id' : event.vehicle_id.id,
+                            'brand' : event.vehicle_id.brand_id.name if event.vehicle_id.brand_id else '',
+                            'model' : event.vehicle_id.model_id.name if event.vehicle_id.model_id else '',
+                            'model_year' : event.vehicle_id.model_year,
+                            'cm' : event.vehicle_id.cm3,
+                            'cylinders' : event.vehicle_id.cylinders if event.vehicle_id.cylinders else '0',
+                            'horsepower' : event.vehicle_id.horsepower if event.vehicle_id.horsepower else '0',
+                            'image' : event.vehicle_id.image_128,
+                            'pitid' : event.pitid if event.pitid else 'N/A',
+                            'startnumber' : event.startnumber if event.startnumber else 'N/A',
+                        })
+                    
+                data = {
+                    'name' : racefield_id.name,
+                    'description' : racefield_id.description,
+                    'image' : racefield_id.image_128,
+                    'vehicle_list' : vehicle_list,
+                }
+                
+                return data
+            else:
+                return False
+        else:
+            return False
+                
+                
+            
+        

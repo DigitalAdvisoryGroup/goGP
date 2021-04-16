@@ -1,0 +1,55 @@
+.vehicle_card {
+	background-color : $primary;
+	color : theme-color('light');
+}
+
+.vehicle_name {
+	white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.racefields_ul {
+	height: 80vh;
+    overflow-y: scroll;
+}
+
+.box {
+	float: left;
+	padding: 50px 0px;
+}
+
+.vehicle-clearfix::after {
+	clear: both;
+	display: table;
+}
+
+.vehicle-options {
+	margin: 5px 0px 0px 0px;
+	float: left;
+}
+
+.vehicle-pagination {
+	float: right;
+}
+
+.vehicle-pagination a {
+	color: black;
+	float: left;
+	padding: 8px 16px;
+	text-decoration: none;
+	transition: background-color .3s;
+	border: 1px solid #ddd;
+	margin: 0 4px;
+}
+
+.vehicle-pagination a.vehicle-active {
+	background-color: $primary;
+	color: theme-color('light');
+	border: 1px solid $primary;
+}
+
+
+.vehicle-pagination a:hover:not(.vehicle-active) {
+	background-color: #ddd;
+}
