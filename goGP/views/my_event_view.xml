@@ -7,6 +7,7 @@
         <field name="model">gogp.my.event</field>
         <field name="arch" type="xml">
             <tree string="goGP myEvent" multi_edit="1" sample="1">
+                <field name='sequence' widget='handle'/>
                 <field name="id"/>
                 <field name="event_id"/>
                 <field name="attendee_id"/>
@@ -68,7 +69,7 @@
         <field name="name">my_event.kanban</field>
         <field name="model">gogp.my.event</field>
         <field name="arch" type="xml">
-            <kanban class="o_kanban_mobile" default_group_by="racefield_id">
+            <kanban class="o_kanban_mobile" default_group_by="racefield_id" default_order="sequence" sample="1">
                 <field name="name"/>
                 <field name="event_id"/>
                 <field name="event_registration_id"/>
@@ -77,6 +78,12 @@
                 <field name="vehicle_id"/>
                 <field name="racefield_id"/>
                 <field name="attendee_id"/>
+                <field name="horsepower"/>
+                <field name="cm3"/>
+                <field name="model_year"/>
+                <field name="startnumber"/>
+                <field name="pitid"/>
+                <field name='sequence' widget='handle'/>
                 <templates>
                     <t t-name="kanban-box">
                         <div class="oe_kanban_global_click o_kanban_record_has_image_fill o_res_partner_kanban">
@@ -92,10 +99,25 @@
                                     <li t-if="record.vehicle_id.raw_value">
                                         <field name="vehicle_id"/>
                                     </li>
+                                    <li t-if="record.horsepower.raw_value">
+                                        <strong>Horsepower: </strong><field name="horsepower"/>
+                                    </li>
+                                    <li t-if="record.cm3.raw_value">
+                                        <strong>Cubic centimetres: </strong><field name="cm3"/>
+                                    </li>
+                                    <li t-if="record.model_year.raw_value">
+                                        <strong>Model Year: </strong><field name="model_year"/>
+                                    </li>
+                                    <li t-if="record.startnumber.raw_value">
+                                        <strong>StartNumber: </strong><field name="startnumber"/>
+                                    </li>
+                                    <li t-if="record.pitid.raw_value">
+                                        <strong>Box ID: </strong><field name="pitid"/>
+                                    </li>
                                     <li t-if="record.vehicle_id.raw_value">
                                         <div class="o_kanban_image_fill_right" t-attf-style="background-image: url(#{kanban_image('gogp.vehicles', 'image_128', record.vehicle_id.raw_value, placeholder)});
-    min-width: 107px;
-    min-height: 54px;
+    min-width: 80px;
+    min-height: 60px;
     background-size: contain;
     background-repeat: no-repeat;
     float: right;" role="img"/>

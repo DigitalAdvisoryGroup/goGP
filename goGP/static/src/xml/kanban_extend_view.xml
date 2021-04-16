@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<templates>
+
+    <t t-extend="KanbanView.Group">
+        <t t-jquery="div.o_kanban_header > div.o_kanban_header_title > span.o_column_title" t-operation="replace">
+            <span t-attf-id="#kanban_header_#{widget.id or widget.db_id}" class="o_column_title"><t t-esc="widget.title"/><t t-esc="widget.data_records.length" /></span>
+            <span>(<t t-esc="widget.data_records.length" />)</span>
+        </t>
+    </t>
+
+</templates>

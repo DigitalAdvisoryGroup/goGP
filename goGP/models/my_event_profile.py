@@ -9,7 +9,9 @@ from odoo.exceptions import UserError
 class MyEvent(models.Model):
     _name = 'gogp.my.event'
     _description = 'goGP participants view'
+    _order = 'sequence'
 
+    sequence = fields.Integer(help='Used to order My event in the kanban view', default=1)
     name = fields.Char("myEvent name")
     attendee_id = fields.Many2one("res.partner",string="Attendee ID")
     event_id = fields.Many2one("event.event", string="Event ID")
@@ -21,6 +23,11 @@ class MyEvent(models.Model):
     startnumber = fields.Char("StartNumber")
     pitid = fields.Char("Box ID")
     nomination_id = fields.Many2one("gogp.nomination","Nomination ID")
+
+    #related fields for kanban
+    horsepower = fields.Integer(related="vehicle_id.horsepower", string="Horsepower", store=True)
+    cm3 = fields.Integer(related="vehicle_id.cm3",string="Cubic centimetres", store=True)
+    model_year = fields.Char(related="vehicle_id.model_year",string="Model Year", store=True)
 
 
     def action_create_nomination(self):

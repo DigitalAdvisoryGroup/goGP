@@ -48,7 +48,7 @@ Description
     'demo': [
     ],
     'qweb': [
-
+            "static/src/xml/kanban_extend_view.xml",
     ],
     'installable': True,
     'auto_install': False,
