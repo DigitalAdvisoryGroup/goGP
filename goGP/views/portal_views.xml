@@ -176,7 +176,7 @@
 								 	</span><br/>
 								</div>
 								<t t-set="vehicle_image" t-value="website.image_url(event.vehicle_id, 'image_128') if event.vehicle_id.image_128 else '/web/static/src/img/placeholder.png'"/>
-								<img t-att-title="vehicle_name if vehicle_name else 'zoomimage'" class="vehicle_img img img-fluid" t-att-src="vehicle_image" alt="..." style="width:100%;height:200px;cursor:pointer;"/>
+								<img t-att-title="vehicle_name if vehicle_name else 'zoomimage'" class="vehicle_img img img-fluid" t-att-src="vehicle_image" alt="..." style="cursor:pointer;"/>
 							</div>
 						</t>
 					</div>
