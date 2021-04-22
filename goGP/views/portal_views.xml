@@ -73,32 +73,62 @@
     </template>
     
 <!--     Race Fields Template -->
-    <template id="website_racefield_template" name="Racefields">
+    <template id="website_racefield_template" name="Racefield">
     	<t t-call="website.layout">
     		<div class="row" style="margin:0;">
-    			<div class="col-sm-3 col-md-3 col-lg-3 col-3">
-		    		<ul class="list-group racefields_ul">
-		    		  <t t-foreach="racefields" t-as="race">
-		    			<li class="racefield_li list-group-item" t-att-data-race-id="race.id" style="cursor:pointer;"><t t-esc="race.name"/></li>
-		   			  </t>
-					</ul>
-				</div>
-				
-				<div class="col-sm-9 col-md-9 col-lg-9 col-9 racefield_content d-none" style="background:#d2d2d2;">
-					<h3 class="racefield_name text-center"></h3>
-					<img class="img img-responsive racefield_image" src="/web/static/src/img/placeholder.png" style="display:block;margin-left:auto;margin-right:auto;width:300px;height:200px;"/>
-				
-					<div id="listingTable" class="row" style="margin:0;margin-top:1%;"></div>
-
-						<center>
-							<div class="" style="margin:auto;width:37.5%;">
-								<div class="box vehicle-pagination">
+    			<div class="col-sm-4 col-md-4 col-lg-4 col-4">
+    				<ul class="list-group racefields_ul">
+    					<t t-foreach="racefields" t-as="race">
+    						<li t-attf-class="racefield_li list-group-item #{'active' if race.id == category.id else ''}" t-att-data-race-id="race.id" style="cursor:pointer;">
+    							<a t-att-href="keep('/racefields/' + slug(race), category=0)" t-attf-class="racefield_a #{'active' if race.id == category.id else ''}">
+					                <span t-field="race.name"/>
+					            </a>
+    						</li>
+    					</t>
+    				</ul>
+    			</div>
+    			
+    			<div class="col-sm-8 col-md-8 col-lg-8 col-8 racefield_content">
+    				<t t-if="category">
+    					<h3 class="racefield_name text-center"><t t-esc="category.name"/></h3>
+						<img class="img img-responsive racefield_image" t-att-title="category.name if category.name else 'zoomimage'" t-att-src="website.image_url(category, 'image_128') if category.image_128 else '/web/static/src/img/placeholder.png'" style="display:block;margin-left:auto;margin-right:auto;width:300px;height:200px;cursor:pointer;"/>
+    				</t>
+    				
+    				<div class="form-inline flex-md-nowrap justify-content-between justify-content-md-center py-3">
+                        <t t-call="website.pager"/>
+                    </div>
+    				
+    				<div class="row" style="margin:0;margin-top:1%;">
+	    				<t t-foreach="products" t-as="event">
+	    					<t t-set="brand_name" t-value="event.vehicle_id.brand_id.name"/>
+	    					<t t-set="model_name" t-value="event.vehicle_id.model_id.name"/>
+	    					<t t-set="vehicle_name" t-value="'N/A'"/>
+	    					
+	    					<t t-set="vehicle_name" t-value="brand_name if brand_name else vehicle_name"/>
+	    					<t t-set="vehicle_name" t-value="vehicle_name + ' ' + model_name if model_name else vehicle_name"/>
+	    					
+		    				<div class="card col-sm-4 col-md-4 col-lg-4 col-12" style="width: 18rem;padding:0;margin-bottom:1%;height:50%;">
+								<div class="vehicle_card">
+									<h6 class="card-title vehicle_name" t-att-title="vehicle_name"> <t t-esc="vehicle_name"/></h6>
+									<span class="card-text">
+										<t t-esc="event.vehicle_id.model_year if event.vehicle_id.model_year else 'N/A'"/> | <t t-esc="event.vehicle_id.cm3 if event.vehicle_id.cm3 else 'N/A'"/> ccm
+									</span><br/>
+									<span class="card-text">
+										<t t-esc="event.vehicle_id.cylinders if event.vehicle_id.cylinders else 'N/A'"/> Zylinder | <t t-esc="event.vehicle_id.horsepower if event.vehicle_id.horsepower else 'N/A'"/> PS
+								 	</span><br/>
+								 	
+								 	<span class="card-text">
+										<t t-esc="event.pitid if event.pitid else 'N/A'"/> Box Id | <t t-esc="event.startnumber if event.startnumber else 'N/A'"/> Start Number
+								 	</span><br/>
 								</div>
+								<t t-set="vehicle_image" t-value="website.image_url(event.vehicle_id, 'image_128') if event.vehicle_id.image_128 else '/web/static/src/img/placeholder.png'"/>
+								<img t-att-title="vehicle_name if vehicle_name else 'zoomimage'" class="vehicle_img img img-fluid" t-att-src="vehicle_image" alt="..." style="cursor:pointer;"/>
 							</div>
-						</center>
-				</div>
-			</div>
-    		
+						</t>
+					</div>
+    				
+    			</div>
+    		</div>
     	</t>
     </template>
 

@@ -1,3 +1,17 @@
+.racefield_li {
+	background-color : theme-color('light') !important;
+	color : $primary !important;
+}
+
+.racefield_li.active {
+	background-color : $primary !important;
+	color : theme-color('light') !important;
+}
+
+.racefield_a.active {
+	color : theme-color('light') !important;
+}
+
 .vehicle_card {
 	background-color : $primary;
 	color : theme-color('light');
