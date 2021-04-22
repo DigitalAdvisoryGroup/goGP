@@ -67,3 +67,15 @@
 .vehicle-pagination a:hover:not(.vehicle-active) {
 	background-color: #ddd;
 }
+
+
+
+@media screen and (max-width: 767px) {
+  .racefields_ul {
+	height: 50vh;
+  }
+  
+  .racefields_pager .pagination {
+  	margin: 0 auto !important;
+  }
+}

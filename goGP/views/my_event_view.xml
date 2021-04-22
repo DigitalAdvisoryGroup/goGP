@@ -69,7 +69,7 @@
         <field name="name">my_event.kanban</field>
         <field name="model">gogp.my.event</field>
         <field name="arch" type="xml">
-            <kanban class="o_kanban_mobile" default_group_by="racefield_id" default_order="racefield_id" sample="1">
+            <kanban class="o_kanban_mobile" default_group_by="racefield_id" default_order="sequence" sample="1">
                 <field name="name"/>
                 <field name="event_id"/>
                 <field name="event_registration_id"/>
