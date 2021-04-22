@@ -15,6 +15,7 @@ class RaceFields(models.Model):
     event_id = fields.Many2one("event.event", string="Event")
     description = fields.Text("Description")
     image_128 = fields.Binary("Logo")
+    gp_event_ids = fields.One2many('gogp.my.event','racefield_id',string='Gp Events')
 
 
 

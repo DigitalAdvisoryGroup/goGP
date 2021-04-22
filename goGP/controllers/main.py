@@ -465,13 +465,24 @@ class CustomWebsiteEventController(WebsiteEventController):
 class RaceFieldsController(http.Controller):
     
     @http.route([
-        '''/racefields''',
-        '''/racefields/page/<int:page>''',
-        '''/racefields/<model("gogp.racefields"):category>''',
-        '''/racefields/<model("gogp.racefields"):category>/page/<int:page>'''    
+        '''/racefields''',    
     ],type="http",auth="user",website=True)
-    def display_reacefields(self, page=0, category=None, search='', ppg=False, **post):
+    def display_racefields(self,**post):
         racefields = request.env['gogp.racefields'].sudo().search([])
+        
+        keep = QueryURL('/racefields/participants', category=False, search='', order='id')
+        return request.render('goGP.website_racefields_menu',{'racefields' : racefields,'keep' : keep})
+    
+    
+    
+    @http.route([
+        '''/racefields/participants''',
+        '''/racefields/participants/page/<int:page>''',
+        '''/racefields/participants/<model("gogp.racefields"):category>''',
+        '''/racefields/participants/<model("gogp.racefields"):category>/page/<int:page>'''    
+    ],type="http",auth="user",website=True)
+    def display_reacefields_participants(self, page=0, category=None, search='', ppg=False, **post):
+        prevpath = request.httprequest.referrer
         Category = request.env['gogp.racefields']
         categs = Category.sudo().search([])
         
@@ -486,14 +497,14 @@ class RaceFieldsController(http.Controller):
         ppg=6
         ppr = 3
         domain = []
-        url = "/racefields"
+        url = "/racefields/participants"
         goGpEvents= request.env['gogp.my.event'].with_context(bin_size=True)
         
         if category:
             domain = [('racefield_id','=',category.id)]
-            url = "/racefields/%s" % slug(category)
+            url = "/racefields/participants/%s" % slug(category)
             
-        keep = QueryURL('/racefields', category=category and int(category), search=search, order='id')
+        keep = QueryURL('/racefields/participants', category=category and int(category), search=search, order='id')
         
         search_product = goGpEvents.search(domain)
         product_count = len(search_product)
@@ -513,6 +524,7 @@ class RaceFieldsController(http.Controller):
             'ppr': ppr,
             'racefields': categs,
             'keep': keep,
+            'prevpath' : prevpath,
         }
         
         return request.render('goGP.website_racefield_template',values)
