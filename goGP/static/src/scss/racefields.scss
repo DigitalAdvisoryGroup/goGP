@@ -12,6 +12,14 @@
 	color : theme-color('light') !important;
 }
 
+.racefield-left-div{
+	position :sticky;
+	top:15%;
+	overflow:auto;
+	height:100%;
+	
+}
+
 .vehicle_card {
 	background-color : $primary;
 	color : theme-color('light');
@@ -25,7 +33,7 @@
 
 .racefields_ul {
 	height: 80vh;
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 
 .box {
@@ -68,9 +76,38 @@
 	background-color: #ddd;
 }
 
+div.race-scrollmenu {
+  color : theme-color('light') !important;
+  background-color : $primary !important;
+  overflow: auto;
+  white-space: nowrap;
+  font-size:small;
+  
+}
+
+div.race-scrollmenu a {
+  display: inline-block;
+  color: white;
+  text-align: center;
+  padding: 14px;
+  text-decoration: none;
+  border-right:1px solid theme-color('light') !important;
+}
+
+div.race-scrollmenu a.active {
+  color: $primary !important;
+  background-color : theme-color('light') !important;
+  border-right:1px solid $primary !important;
+}
 
 
 @media screen and (max-width: 767px) {
+  .racefield-left-div{
+	position :relative;
+	top:unset;
+	overflow:auto;
+	height:100%;
+  }
   .racefields_ul {
 	height: 50vh;
   }

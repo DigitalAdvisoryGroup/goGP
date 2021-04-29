@@ -508,11 +508,14 @@ class RaceFieldsController(http.Controller):
         
         search_product = goGpEvents.search(domain)
         product_count = len(search_product)
+        ppg = product_count
+        
+        if ppg == 0:
+            ppg=1
         pager = request.website.pager(url=url, total=product_count, page=page, step=ppg, scope=7, url_args=post)
         offset = pager['offset']
         
         products = search_product[offset: offset + ppg]
-        
         
         values = {
             'search': search,

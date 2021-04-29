@@ -1,8 +1,20 @@
 odoo.define('goGP.racefields', function (require) {
     'use strict';
 
-
 	$(document).ready(function(){
+		
+		
+		var top_val = 0
+				
+		if($('.o_menu_brand').length > 0) {
+			top_val += $('.o_menu_brand').height()
+		}
+		
+		if($('header#top').length > 0) {
+			top_val += $('header#top').height()
+		}
+				
+		$('.race-scrollmenu').css({'top' : top_val.toString() + 'px'});
 		
 		$('img.vehicle_img').click(function(){
 			$('#ImageZoomModal').modal('hide');

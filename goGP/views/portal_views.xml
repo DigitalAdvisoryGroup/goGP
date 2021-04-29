@@ -125,13 +125,8 @@
 <!--                         </li> -->
                     </ol>
                 </div>
-    			<div class="col-sm-4 col-md-4 col-lg-4 col-12">
-    				<button type="button" class="btn btn-link d-lg-none d-sm-none d-md-none"
-			                data-target="#racefields_collapse" data-toggle="collapse">
-			                Show Racefields
-		            </button>
-		            
-    				<ul id="racefields_collapse" class="list-group racefields_ul collapse d-lg-block d-md-block d-sm-block">
+    			<div class="col-sm-4 col-md-4 col-lg-4 col-12 racefield-left-div">
+    				<ul id="racefields_collapse" class="list-group racefields_ul d-lg-block d-md-block d-sm-block d-none">
     					<t t-foreach="racefields" t-as="race">
     						<li t-attf-class="racefield_li list-group-item #{'active' if race.id == category.id else ''}" t-att-data-race-id="race.id" style="cursor:pointer;">
     							<a t-att-href="keep('/racefields/participants/' + slug(race), category=0)" t-attf-class="racefield_a #{'active' if race.id == category.id else ''}">
@@ -140,6 +135,14 @@
     						</li>
     					</t>
     				</ul>
+    				
+    				<div class="race-scrollmenu d-lg-none d-sm-none d-md-none fixed-top">
+    					<t t-foreach="racefields" t-as="race">
+							<a t-att-href="keep('/racefields/participants/' + slug(race), category=0)" t-attf-class="racefield_a #{'active' if race.id == category.id else ''}">
+				            	<span t-field="race.name"/> (<t t-esc="len(race.gp_event_ids)"/>)
+				        	</a>
+    					</t>
+					</div>
     			</div>
     			
     			<div class="col-sm-8 col-md-8 col-lg-8 col-12 racefield_content">
@@ -180,7 +183,6 @@
 							</div>
 						</t>
 					</div>
-    				
     			</div>
     		</div>
     	</t>
