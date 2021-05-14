@@ -10,6 +10,7 @@
                 <field name="name"/>
                 <field name="event_id"/>
                 <field name="description"/>
+                <field name="is_published" string="Is Published" optional="hide"/>
             </tree>
         </field>
     </record>
@@ -22,6 +23,9 @@
                 <field name="name"/>
                 <field name="event_id"/>
                 <field name="description"/>
+                <field name="is_published"/>
+                <separator/>
+                <filter string="Published" name="published" domain="[('is_published', '=', True)]"/>
             </search>
         </field>
     </record>
@@ -31,6 +35,9 @@
         <field name="arch" type="xml">
             <form string="goGP racefields">
                 <sheet>
+                    <div class="oe_button_box" name="button_box" groups="base.group_user">
+                        <field name="is_published" widget="website_redirect_button" />
+                    </div>
                     <field name="image_128" widget="image" class="oe_avatar"/>
                     <div>
                         <label for="name" class="oe_edit_only"/>

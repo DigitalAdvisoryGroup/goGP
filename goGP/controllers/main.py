@@ -466,9 +466,9 @@ class RaceFieldsController(http.Controller):
     
     @http.route([
         '''/racefields''',    
-    ],type="http",auth="user",website=True)
+    ],type="http",auth="public",website=True)
     def display_racefields(self,**post):
-        racefields = request.env['gogp.racefields'].sudo().search([])
+        racefields = request.env['gogp.racefields'].sudo().search([('is_published','=',True)])
         
         keep = QueryURL('/racefields/participants', category=False, search='', order='id')
         return request.render('goGP.website_racefields_menu',{'racefields' : racefields,'keep' : keep})
@@ -480,7 +480,7 @@ class RaceFieldsController(http.Controller):
         '''/racefields/participants/page/<int:page>''',
         '''/racefields/participants/<model("gogp.racefields"):category>''',
         '''/racefields/participants/<model("gogp.racefields"):category>/page/<int:page>'''    
-    ],type="http",auth="user",website=True)
+    ],type="http",auth="public",website=True)
     def display_reacefields_participants(self, page=0, category=None, search='', ppg=False, **post):
         prevpath = request.httprequest.referrer
         Category = request.env['gogp.racefields']
