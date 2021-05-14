@@ -484,7 +484,7 @@ class RaceFieldsController(http.Controller):
     def display_reacefields_participants(self, page=0, category=None, search='', ppg=False, **post):
         prevpath = request.httprequest.referrer
         Category = request.env['gogp.racefields']
-        categs = Category.sudo().search([])
+        categs = Category.sudo().search([('is_published','=',True)])
         
         if category:
             category = Category.sudo().search([('id', '=', int(category))], limit=1)
@@ -530,7 +530,11 @@ class RaceFieldsController(http.Controller):
             'prevpath' : prevpath,
         }
         
-        return request.render('goGP.website_racefield_template',values)
+        if category:
+            values['main_object'] = category
+        
+        page = request.website.is_publisher() and 'goGP.website_racefield_template' or 'website.page_404'
+        return request.render(page,values)
                 
                 
             
