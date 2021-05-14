@@ -533,7 +533,11 @@ class RaceFieldsController(http.Controller):
         if category:
             values['main_object'] = category
         
-        page = request.website.is_publisher() and 'goGP.website_racefield_template' or 'website.page_404'
+        if category.website_published:
+            page = 'goGP.website_racefield_template'
+        else:
+            page = request.website.is_publisher() and 'goGP.website_racefield_template' or 'http_routing.404'
+            
         return request.render(page,values)
                 
                 
