@@ -18,6 +18,20 @@ class goGPWebsiteSale(WebsiteSale):
         order = request.website.sale_get_order(update_pricelist=True)
         return super(goGPWebsiteSale, self).checkout(**post)
 
+    @http.route()
+    def payment_confirmation(self, **post):
+        res = super(goGPWebsiteSale, self).payment_confirmation(**post)
+        sale_order_id = request.session.get('sale_last_order_id')
+        if sale_order_id:
+            order = request.env['sale.order'].sudo().browse(sale_order_id)
+            order.action_confirm()
+            order.order_line._update_registrations(confirm=True, cancel_to_draft=False)
+            invoice_id = order._create_invoices(final=True)
+            invoice_id.action_post()
+            # inv_send = request.env['account.invoice.send'].sudo().with_context(active_ids=invoice_id.ids).create({'is_email': True})
+            # inv_send._send_email()
+        return res
+
 
 class goGPPortal(CustomerPortal):
 
