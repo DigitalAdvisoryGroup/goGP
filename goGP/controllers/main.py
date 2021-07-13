@@ -395,7 +395,7 @@ class CustomWebsiteEventController(WebsiteEventController):
         for registration_values in registration_data:
             reg_email = registration_values['email'].lower()
             registration_values['email'] = reg_email
-            if not reg_email == request.env.user.email.lower():
+            if request.env.user.email and not reg_email == request.env.user.email.lower():
                 portal_user_id = request.env['res.users'].sudo().search([('login', '=', reg_email)])
                 if not portal_user_id:
                     another_partner_id = request.env['res.partner'].sudo().search([('email', '=', reg_email)])
