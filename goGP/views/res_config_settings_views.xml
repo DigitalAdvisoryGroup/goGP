@@ -16,7 +16,7 @@
                             <div class="text-muted">
                                 Automatic email sent after the customer has signed or paid online
                             </div>
-                            <div class="row mt16">
+                            <div class="row mt16 col-12">
                                 <label for="invoice_confirmation_template_id" string="Invoice Email Template"/>
                                 <field name="invoice_confirmation_template_id" class="oe_inline"/>
                             </div>
