@@ -44,6 +44,7 @@ Description
             "views/event_view.xml",
             "views/portal_views.xml",
             "views/menu.xml",
+            "views/res_config_settings_views.xml"
     ],
     'demo': [
     ],

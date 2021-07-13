@@ -27,9 +27,15 @@ class goGPWebsiteSale(WebsiteSale):
             order.action_confirm()
             order.order_line._update_registrations(confirm=True, cancel_to_draft=False)
             invoice_id = order._create_invoices(final=True)
-            invoice_id.action_post()
-            # inv_send = request.env['account.invoice.send'].sudo().with_context(active_ids=invoice_id.ids).create({'is_email': True})
-            # inv_send._send_email()
+            if invoice_id:
+                invoice_id.action_post()
+                send_by_email_template_id = request.env['ir.config_parameter'].sudo().get_param('goGP.default_invoice_confirmation_template')
+                if send_by_email_template_id:
+                    send_by_email_template_id = request.env['mail.template'].browse(int(send_by_email_template_id))
+                else:
+                    send_by_email_template_id = request.env.ref('account.email_template_edi_invoice')
+                send_by_email_template_id.sudo().send_mail(invoice_id.id, force_send=True)
+                invoice_id.is_move_sent = True
         return res
 
 
