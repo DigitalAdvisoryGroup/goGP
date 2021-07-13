@@ -122,11 +122,21 @@
                 <div class="row">
                     <div class="col-lg my-2">
                         <label>Name</label>
-                        <input class="form-control" type="text" t-att-value="user.name" t-attf-name="#{counter}-name" required="This field is required"/>
+                        <t t-if="user.has_group('base.group_public')">
+                            <input class="form-control" type="text" t-attf-name="#{counter}-name" required="This field is required"/>
+                        </t>
+                        <t t-else="">
+                            <input class="form-control" type="text" t-att-value="user.name" t-attf-name="#{counter}-name" required="This field is required"/>
+                        </t>
                     </div>
                     <div class="col-lg my-2">
                         <label>Email</label>
-                        <input class="form-control" type="email" t-att-value="user.email" t-attf-name="#{counter}-email" required="This field is required"/>
+                        <t t-if="user.has_group('base.group_public')">
+                            <input class="form-control" type="email"  t-attf-name="#{counter}-email" required="This field is required"/>
+                        </t>
+                        <t t-else="">
+                            <input class="form-control" type="email" t-att-value="user.email" t-attf-name="#{counter}-email" required="This field is required"/>
+                        </t>
                     </div>
                     <div class="col-lg my-2">
                         <label>Phone
@@ -152,10 +162,10 @@
                         </label>
                         <input class="form-control" type="tel" t-attf-name="#{counter}-phone" required="This field is required"/>
                     </div>
-                    <div class="col-lg my-2">
+                    <!--<div class="col-lg my-2">
                         <label>Sidecar co-pilot</label>
                         <input type="checkbox" class="form-control" t-attf-name="#{counter}-sidecar" />
-                    </div>
+                    </div>-->
 
                     <input class="d-none" type="text" t-attf-name="#{counter}-event_ticket_id" t-attf-value="#{ticket['id']}"/>
                 </div>

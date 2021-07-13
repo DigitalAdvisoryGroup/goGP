@@ -54,6 +54,8 @@ class EventRegistration(models.Model):
 
     sidecar = fields.Boolean("Sidecar")
 
+    def _get_website_registration_allowed_fields(self):
+        return {'name', 'phone', 'email', 'mobile', 'event_id', 'partner_id', 'event_ticket_id', 'sidecar'}
 
     def create_socialgroup_sidecar(self):
         parnter_id = self.env["res.partner"].sudo()
